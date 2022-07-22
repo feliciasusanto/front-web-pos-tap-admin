@@ -1,13 +1,15 @@
 import React from "react";
-import {Switch, Route} from 'react-router-dom'
+import {Routes, Route} from 'react-router-dom'
 
-import Register from "./Routes/RegisterRoute";
+import Register from "./Routes/RegisterRoute.js";
+import Login from './Routes/LoginRoute.js'
 
 const Main = () => {
     return(
-        <Switch>
-            <Route exact path="/register" component={Register}></Route>
-        </Switch>
+        <Routes>
+            <Route exact path="/register" element={<Register/>}></Route>
+            <Route exact path='/login' element={<Login/>}></Route>
+        </Routes>
     )
 }
 
