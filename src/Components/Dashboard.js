@@ -4,7 +4,7 @@ import axios from 'axios'
 class Dashboard extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { daily: '', monthly: '', yearly: ''}
+        this.state = { daily: '', monthly: '', yearly: '' }
     }
 
     componentDidMount() {
@@ -21,25 +21,25 @@ class Dashboard extends React.Component {
 
     render() {
         return (
-            <div className='container-flex' style={{ margin: '8vh 0 0 5.3vw', width: '94.7vw', display: 'inline-block' }}>
-                <div className='row' style={{ height: '2vh' }}></div>
+            <div className='container-flex' style={{ margin: '8vh 0 0 5.3vw', width: '94.7vw', padding: '0 4vw', display: 'inline-block' }}>
+                <div className='row' style={{ height: '3vh' }}></div>
                 <div className='row cards' style={{ textAlign: 'center' }}>
-                    <div className='col'></div>
+                    <h4 style={{textAlign: 'left'}}>Dashboard</h4>
+                    <hr style={{ background: 'black' }} />
                     <div className='col-3' style={{ background: '#E0FDF3', padding: '2vw 2vh', borderRadius: '10px' }}>
-                        <p style={{fontWeight: '600'}}>Total Penjualan Hari ini</p>
+                        <p style={{ fontWeight: '600' }}>Total Penjualan Hari ini</p>
                         <p style={{ fontWeight: 'bold', fontSize: '3vh' }}>{this.state.daily}</p>
                     </div>
                     <div className='col'></div>
                     <div className='col-3' style={{ background: '#FFF8BD', padding: '2vw 2vh', borderRadius: '10px' }}>
-                        <p style={{fontWeight: '600'}}>Total Penjualan Bulan ini</p>
+                        <p style={{ fontWeight: '600' }}>Total Penjualan Bulan ini</p>
                         <p style={{ fontWeight: 'bold', fontSize: '3vh' }} >{this.state.monthly}</p>
                     </div>
                     <div className='col'></div>
                     <div className='col-3' style={{ background: '#FFD9BD', padding: '2vw 2vh', borderRadius: '10px' }}>
-                        <p style={{fontWeight: '600'}}>Total Penjualan Tahun ini</p>
+                        <p style={{ fontWeight: '600' }}>Total Penjualan Tahun ini</p>
                         <p style={{ fontWeight: 'bold', fontSize: '3vh' }}>{this.state.yearly}</p>
                     </div>
-                    <div className='col'></div>
                 </div>
             </div>
 
