@@ -27,7 +27,10 @@ class EmployeesUpdate extends React.Component {
         axios.get(`https://backend-pos-tap.herokuapp.com/admin/users/update-data/${this.state.user_id}`, { headers: { 'Authorization': `Bearer ${token}` } })
             .then(res => {
                 if (res.data == 'Log on user data can\'t be change.') {
-                    alert('Tidak dapat mengubah data dari pengguna anda.')
+                    alert('Tidak dapat mengubah data dari pengguna anda sendiri.')
+                    this.setState({
+                        redirect: true
+                    })
                 }
                 else {
                     this.setState({
@@ -64,7 +67,7 @@ class EmployeesUpdate extends React.Component {
         event.preventDefault()
         let token = sessionStorage.getItem('token')
         if (this.state.username.trim().length < 5 || this.state.username.trim().length > 10) {
-            alert(this.state.username.length)
+            alert('Username harus terdiri dari 5-10 karakter.')
         }
         else if (this.state.password !== this.state.confirmPassword) {
             alert('Kata sandi harus sama dengan konfirmasi kata sandi.')

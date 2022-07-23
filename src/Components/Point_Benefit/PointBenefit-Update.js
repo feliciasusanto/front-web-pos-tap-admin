@@ -1,18 +1,30 @@
 import React from 'react'
-import { Link, Navigate } from 'react-router-dom'
+import { Link, Navigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 
-class PointBenefitAddNew extends React.Component {
+class PointBenefitUpdate extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { benefitName: '', minPoint: '', discountBenefit: '', activeStatus: 'Aktif', redirect: false }
+        this.state = { benefit_id: parseInt(window.location.pathname.split('/')[3]), benefitName: '', minPoint: '', discountBenefit: '', activeStatus: 'Aktif', redirect: false }
         this.handleInputChange = this.handleInputChange.bind(this)
         this.handleClickSubmit = this.handleClickSubmit.bind(this)
     }
 
     componentDidMount() {
         let token = sessionStorage.getItem('token')
-        
+        // load previous data 
+        axios.get(`https://backend-pos-tap.herokuapp.com/admin/point-benefits/update-benefit/${this.state.benefit_id}`, { headers: { 'Authorization': `Bearer ${token}` } })
+            .then(res => {
+                this.setState({
+                    benefitName: res.data[0].name,
+                    minPoint: (res.data[0].minimum_point).toString(),
+                    discountBenefit: res.data[0].disc_percent,
+                    activeStatus: res.data[0].active_status
+                })
+            })
+            .catch(err =>{
+                alert(JSON.stringify(err))
+            })
     }
 
     handleInputChange = (event) => {
@@ -49,19 +61,19 @@ class PointBenefitAddNew extends React.Component {
         }
         else{
             let token = sessionStorage.getItem('token')
-            axios.post('https://backend-pos-tap.herokuapp.com/admin/point-benefits/add-new', { benefitName: this.state.benefitName, minPoint: parseInt(this.state.minPoint), discountBenefit: parseFloat(this.state.discountBenefit), activeStatus: this.state.activeStatus }, { headers: { 'Authorization': `Bearer ${token}` } })
+            axios.post(`https://backend-pos-tap.herokuapp.com/admin/point-benefits/update-benefit/${this.state.benefit_id}`, { benefitName: this.state.benefitName, minPoint: parseInt(this.state.minPoint), discountBenefit: parseFloat(this.state.discountBenefit), activeStatus: this.state.activeStatus }, { headers: { 'Authorization': `Bearer ${token}` } })
                 .then((res) => {
-                    if(res.data === 'Benefit name has been registered previously.'){
+                    if(res.data === 'Benefit name existed.'){
                         alert(`Nama benefit ${this.state.benefitName} sudah terdaftar sebelumnya.`)
                     }
-                    else if(res.data === 'Minimum point value existed.'){
+                    else if(res.data === 'Minimum point existed.'){
                         alert(`Benefit dengan minimal poin ${parseInt(this.state.minPoint)} sudah terdaftar sebelumnya.`)
                     }
-                    else if(res.data === 'Discount value existed.'){
+                    else if(res.data === 'Discount existed.'){
                         alert(`Benefit dengan diskon benefit ${parseFloat(this.state.discountBenefit)}% sudah terdaftar sebelumnya.`)
                     }
                     else{
-                        alert(`Benefit dengan nama ${this.state.benefitName} berhasil disimpan.`)
+                        alert(`Benefit dengan nama ${this.state.benefitName} berhasil diubah.`)
                         this.setState({
                             redirect : true
                         })
@@ -87,7 +99,7 @@ class PointBenefitAddNew extends React.Component {
                     <div className='col-12'>
                         <h4>Point Benefit</h4>
                         <hr style={{ background: 'black' }} />
-                        <h5>Tambah Benefit</h5>
+                        <h5>Ubah Benefit</h5>
                     </div>
                 </div>
                 <div className='row' style={{ height: '3vh' }}></div>
@@ -145,4 +157,4 @@ class PointBenefitAddNew extends React.Component {
     }
 }
 
-export default PointBenefitAddNew
+export default PointBenefitUpdate
