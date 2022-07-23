@@ -7,7 +7,7 @@ class PointBenefitMain extends React.Component {
     constructor(props) {
         super(props)
         this.state = { benefits: []}
-        this.usersListTable = this.benefitListTable.bind(this)
+        this.benefitListTable = this.benefitListTable.bind(this)
     }
 
     componentDidMount() {
@@ -20,7 +20,7 @@ class PointBenefitMain extends React.Component {
             })
     }
 
-    benefitListTable = (users_arr) => {
+    benefitListTable = (benefits_arr) => {
         const iterateItem = (items) => {
             let i = 0
             return items.map((item) => {
@@ -52,7 +52,7 @@ class PointBenefitMain extends React.Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {iterateItem(users_arr)}
+                    {iterateItem(benefits_arr)}
                 </tbody>
             </table>
         )

@@ -11,6 +11,7 @@ import EmployeesUpdate from './Routes/Employees/EmployeesUpdateRoute.js'
 import PointBenefitMain from './Routes/Point_Benefit/PointBenefitMainRoute.js'
 import PointBenefitNew from './Routes/Point_Benefit/PointBenefitAddNewRoute.js'
 import PointBenefitUpdate from './Routes/Point_Benefit/PointBenefitUpdateRoute.js'
+import CustomersMain from "./Routes/Customers/CustomersMainRoute.js";
 
 const AppRoutes = () => {
     return(
@@ -26,6 +27,7 @@ const AppRoutes = () => {
             <Route exact path='/point-benefit/point-benefit-list' element={<PointBenefitMain/>}></Route>
             <Route exact path='/point-benefit/add-new-benefit' element={<PointBenefitNew/>}></Route>
             <Route exact path='/point-benefit/update-data/:id' element={<PointBenefitUpdate />}></Route>
+            <Route exact path='/customers/customers-list' element={<CustomersMain/>}></Route>
         </Routes>
     )
 }
