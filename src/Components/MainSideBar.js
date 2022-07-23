@@ -1,19 +1,37 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import ico_employee from './../assets/images/employee.png'
 import ico_point from './../assets/images/point.png'
 import ico_cust from './../assets/images/customers.png'
 import ico_sales from './../assets/images/sales.png'
 import ico_warehouse from './../assets/images/warehouse.png'
+import axios from 'axios'
 
 class Sidebar extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { hover: false }
+        this.state = { redirectLogin: false }
+    }
+
+    componentDidMount(){
+        let token = sessionStorage.getItem('token')
+        axios.get('https://backend-pos-tap.herokuapp.com/admin/token-validation', { headers: { 'Authorization': `Bearer ${token}` } })
+        .then((res) => {})
+        .catch((err) => {
+            if(err.response.status === 403){
+                this.setState({
+                    redirectLogin: true
+                })
+            }
+        })
     }
 
     render() {
         let linkStyle = { padding: '0 0.5vw', fontSize: '1.9vh', textDecoration: 'none', color: 'black', textAlign: 'center' }
+
+        if (this.state.redirectLogin === true){
+            return(<Navigate to='/login'/>)
+        }
 
         return (
             <div style={{ margin: '8vh 0 0 0', width: '5.3vw', height: '92vh', background: '#63B4FF', display: 'inline-block', position: 'fixed' }}>

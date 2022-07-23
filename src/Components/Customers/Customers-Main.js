@@ -73,7 +73,7 @@ class CustomersMain extends React.Component {
                         <hr style={{ background: 'black' }} />
                     </div>
                     <div className='col-2'>
-                        <Link to='/customers/add-new' style={{ color: 'black', textDecoration: 'none', padding: '0.8vh 1.5vw', background: '#FBF337', borderRadius: '5px', border: 'none' }}>Tambah</Link>
+                        <Link to='/customers/add-new-customer' style={{ color: 'black', textDecoration: 'none', padding: '0.8vh 1.5vw', background: '#FBF337', borderRadius: '5px', border: 'none' }}>Tambah</Link>
                     </div>
                     <div className='col-12'>
                         <h5 style={{ marginTop: '3vh' }}>Daftar Pelanggan</h5>

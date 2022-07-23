@@ -10,11 +10,6 @@ class PointBenefitAddNew extends React.Component {
         this.handleClickSubmit = this.handleClickSubmit.bind(this)
     }
 
-    componentDidMount() {
-        let token = sessionStorage.getItem('token')
-        
-    }
-
     handleInputChange = (event) => {
         const target = event.target
         const name = target.name

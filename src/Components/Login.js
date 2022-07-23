@@ -13,6 +13,19 @@ class Login extends React.Component {
         this.handleClick = this.handleClick.bind(this)
     }
 
+    componentDidMount(){
+        let token = sessionStorage.getItem('token')
+        axios.get('https://backend-pos-tap.herokuapp.com/admin/token-validation', { headers: { 'Authorization': `Bearer ${token}` } })
+        .then((res) => {
+            if(res.data.username !== ''){
+                this.setState({
+                    redirect: true
+                })
+            }
+        })
+        .catch((err) => {})
+    }
+
     handleInputChange = (event) => {
         const target = event.target
         const name = target.name
