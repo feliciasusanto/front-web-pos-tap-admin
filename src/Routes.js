@@ -7,6 +7,7 @@ import Dashboard from './Routes/DashboardRoute.js'
 import ChangePassword from "./Routes/ChangePassRoute.js";
 import EmployeesMain from './Routes/Employees/EmployeesMainRoute.js'
 import EmployeesNew from './Routes/Employees/EmployeesAddNewRoute.js'
+import EmployeesUpdate from './Routes/Employees/EmployeesUpdateRoute.js'
 
 const AppRoutes = () => {
     return(
@@ -18,6 +19,7 @@ const AppRoutes = () => {
             <Route exact path='/change-password' element={<ChangePassword />}></Route>
             <Route exact path='/employees/roles-employees-list' element={<EmployeesMain />}></Route>
             <Route exact path='/employees/add-new-employee' element={<EmployeesNew />}></Route>
+            <Route exact path='/employees/update-data/:id' element={<EmployeesUpdate />}></Route>
         </Routes>
     )
 }

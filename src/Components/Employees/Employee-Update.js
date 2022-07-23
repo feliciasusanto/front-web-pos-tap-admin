@@ -1,11 +1,11 @@
 import React from 'react'
-import { Link, Navigate } from 'react-router-dom'
+import { Link, Navigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 
-class EmployeesAddNew extends React.Component {
+class EmployeesUpdate extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { roles: [], username: '', password: '', confirmPassword: '', role: 'Superuser', activeStatus: 'Aktif', redirect: false }
+        this.state = { user_id: parseInt(window.location.pathname.split('/')[3]), roles: [], username: '', password: '', confirmPassword: '', role: 'Superuser', activeStatus: 'Aktif', redirect: false }
         this.roleListCombo = this.roleListCombo.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this)
         this.handleClickSubmit = this.handleClickSubmit.bind(this)
@@ -13,15 +13,33 @@ class EmployeesAddNew extends React.Component {
 
     componentDidMount() {
         let token = sessionStorage.getItem('token')
+        // load role list
         axios.get('https://backend-pos-tap.herokuapp.com/admin/users/user_roles', { headers: { 'Authorization': `Bearer ${token}` } })
             .then(res => {
                 this.setState({
-                    roles: res.data
+                    roles: res.data,
                 })
             })
             .catch((err) => {
                 alert(JSON.stringify(err))
             })
+        // load previous user data 
+        axios.get(`https://backend-pos-tap.herokuapp.com/admin/users/update-data/${this.state.user_id}`, { headers: { 'Authorization': `Bearer ${token}` } })
+            .then(res => {
+                if (res.data == 'Log on user data can\'t be change.') {
+                    alert('Tidak dapat mengubah data dari pengguna anda.')
+                }
+                else {
+                    this.setState({
+                        username: res.data[0].username,
+                        password: res.data[0].password,
+                        confirmPassword: res.data[0].password,
+                        role: res.data[0].role_name,
+                        activeStatus: res.data[0].active_status
+                    })
+                }
+            })
+
     }
 
     handleInputChange = (event) => {
@@ -44,8 +62,9 @@ class EmployeesAddNew extends React.Component {
 
     handleClickSubmit = (event) => {
         event.preventDefault()
+        let token = sessionStorage.getItem('token')
         if (this.state.username.trim().length < 5 || this.state.username.trim().length > 10) {
-            alert('Username harus terdiri dari 5 - 10 karakter.')
+            alert(this.state.username.length)
         }
         else if (this.state.password !== this.state.confirmPassword) {
             alert('Kata sandi harus sama dengan konfirmasi kata sandi.')
@@ -60,14 +79,13 @@ class EmployeesAddNew extends React.Component {
             alert('Mohon melakukan pemilihan status keaktifan.')
         }
         else {
-            let token = sessionStorage.getItem('token')
-            axios.post('https://backend-pos-tap.herokuapp.com/admin/users/add-new', { username: this.state.username, password: this.state.password, confirmPassword: this.state.confirmPassword, role: this.state.role, activeStatus: this.state.activeStatus }, { headers: { 'Authorization': `Bearer ${token}` } })
+            axios.post(`https://backend-pos-tap.herokuapp.com/admin/users/update-data/${this.state.user_id}`, { username: this.state.username, password: this.state.password, confirmPassword: this.state.confirmPassword, role: this.state.role, activeStatus: this.state.activeStatus }, { headers: { 'Authorization': `Bearer ${token}` } })
                 .then((res) => {
                     if (res.data === 'Username existed.') {
-                        alert('Username tidak boleh sama dengan yang sudah terdaftar sebelumnya.')
+                        alert('Sudah terdapat pengguna/ karyawan dengan username tersebut.')
                     }
-                    else {
-                        alert(`Pengguna/ karyawan baru dengan peran ${this.state.role.toLowerCase()} berhasil didaftarkan.`)
+                    else if (res.data === 'OK'){
+                        alert('Data pengguna/ karyawan berhasil diubah.')
                         this.setState({redirect: true})
                     }
                 })
@@ -88,7 +106,7 @@ class EmployeesAddNew extends React.Component {
             })
         }
         return (
-            <select name='role' onChange={this.handleSelectChange} style={{ width: '50%', background: 'lightgrey', border: 'none', borderRadius: '5px', padding: '0.3vh 0' }}>
+            <select name='role' value={this.state.role} onChange={this.handleSelectChange} style={{ width: '50%', background: 'lightgrey', border: 'none', borderRadius: '5px', padding: '0.3vh 0' }}>
                 {iterateItem(role_arr)}
             </select>
         )
@@ -108,7 +126,7 @@ class EmployeesAddNew extends React.Component {
                     <div className='col-12'>
                         <h4>Karyawan</h4>
                         <hr style={{ background: 'black' }} />
-                        <h5>Tambah Karyawan</h5>
+                        <h5>Ubah Data Karyawan</h5>
                     </div>
                 </div>
                 <div className='row' style={{ height: '3vh' }}></div>
@@ -123,13 +141,13 @@ class EmployeesAddNew extends React.Component {
                     </div>
                     <div className='row' style={{ margin: '0 0 2vh 0' }}>
                         <div className='col-2'>
-                            <label>Kata sandi</label>
+                            <label>Kata sandi baru</label>
                         </div>
                         <div className='col-4'>
                             <input type='password' name='password' value={this.state.password} onChange={this.handleInputChange} style={inputStyle} />
                         </div>
                     </div>
-                    <div className='row' style={{ margin: '0 0 2vh 0' }}>
+                    <div className='row' style={{ margin: '0 0 0 0' }}>
                         <div className='col-2'>
                             <label>Konfirmasi kata sandi baru</label>
                         </div>
@@ -137,7 +155,11 @@ class EmployeesAddNew extends React.Component {
                             <input type='password' name='confirmPassword' value={this.state.confirmPassword} onChange={this.handleInputChange} style={inputStyle} />
                         </div>
                     </div>
-
+                    <div className='row' style={{ margin: '0 0 0 0' }}>
+                        <div className='col-6'>
+                            <p style={{ color: 'red', fontSize: '1vw' }}>Harap untuk tidak mengubah isi dari kolom kata sandi baru dan konfirmasi kata sandi baru jika tidak ingin melakukan reset/ ubah kata sandi secara paksa.</p>
+                        </div>
+                    </div>
                     <div className='row' style={{ margin: '0 0 2vh 0' }}>
                         <div className='col-2'>
                             <label>Peran</label>
@@ -174,4 +196,4 @@ class EmployeesAddNew extends React.Component {
     }
 }
 
-export default EmployeesAddNew
+export default EmployeesUpdate
