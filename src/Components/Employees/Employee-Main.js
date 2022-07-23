@@ -109,7 +109,6 @@ class EmployeesMain extends React.Component {
                         <h5>Daftar Peran</h5>
                     </div>
                 </div>
-                <div className='row' style={{ height: '3vh' }}></div>
                 <div className='row'>
                     <div className='col-3'>
                         {this.roleListTable(this.state.roles)}
