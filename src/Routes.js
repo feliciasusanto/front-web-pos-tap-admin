@@ -13,6 +13,7 @@ import PointBenefitNew from './Routes/Point_Benefit/PointBenefitAddNewRoute.js'
 import PointBenefitUpdate from './Routes/Point_Benefit/PointBenefitUpdateRoute.js'
 import CustomersMain from './Routes/Customers/CustomersMainRoute.js'
 import CustomersNew from './Routes/Customers/CustomersAddNewRoute.js'
+import CustomersReadDetail from './Routes/Customers/CustomersReadDetailRoute.js'
 
 const AppRoutes = () => {
     return(
@@ -30,6 +31,7 @@ const AppRoutes = () => {
             <Route exact path='/point-benefit/update-data/:id' element={<PointBenefitUpdate />}></Route>
             <Route exact path='/customers/customers-list' element={<CustomersMain/>}></Route>
             <Route exact path='/customers/add-new-customer' element={<CustomersNew/>}></Route>
+            <Route exact path='/customers/customer-details/:id' element={<CustomersReadDetail />}></Route>
         </Routes>
     )
 }

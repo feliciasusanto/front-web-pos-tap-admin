@@ -5,7 +5,7 @@ import axios from 'axios'
 class CustomersAddNew extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { custCode: '', password: '', confirmPassword: '', custName: '', taxId: '', billToAddress: '', shipToAddress: '', phone: '', email: '', ctcPersonName: '', ctcPersonPhone:'', ctcPersonEmail: '', remarks: '', redirect: false, redirectLogin: false }
+        this.state = { custCode: ' ', password: '', confirmPassword: '', custName: ' ', taxId: ' ', billToAddress: ' ', shipToAddress: ' ', phone: ' ', email: ' ', ctcPersonName: ' ', ctcPersonPhone: ' ', ctcPersonEmail: ' ', remarks: ' ', redirect: false, redirectLogin: false }
         this.handleInputChange = this.handleInputChange.bind(this)
         this.handleClickSubmit = this.handleClickSubmit.bind(this)
     }
@@ -22,54 +22,60 @@ class CustomersAddNew extends React.Component {
     handleClickSubmit = (event) => {
         event.preventDefault()
 
-        if(this.state.taxId === ''){
+        if (this.state.taxId === '') {
             this.setState({
                 taxId: '00.000.000.0-000.000'
             })
         }
-        else if(this.state.custCode.trim().length < 5 || this.state.custCode.trim().length > 8){
+        else if (this.state.custCode.trim().length < 5 || this.state.custCode.trim().length > 8) {
             alert('Kode pelanggan harus terdiri dari 5-8 karakter.')
         }
-        else if(this.state.custName.trim().length === 0){
+        else if (this.state.custName.trim().length === 0) {
             alert('Harap mengisi kolom nama pelanggan.')
         }
-        else if(this.state.taxId.trim().length != 20){
+        else if (this.state.taxId.trim().length != 20) {
             alert('Nomor NPWP salah. Harap diperiksa kembali.')
         }
-        else if(this.state.billToAddress.trim().length === 0){
+        else if (this.state.billToAddress.trim().length === 0) {
             alert('Harap mengisi alamat penagihan sesuai NPWP.')
         }
-        else if(this.state.shipToAddress.trim().length === 0){
+        else if (this.state.shipToAddress.trim().length === 0) {
             alert('Harap mengisi alamat pengiriman.')
         }
-        else if(this.state.phone.trim().length === 0){
+        else if (this.state.phone.trim().length === 0) {
             alert('Harap mengisi kolom nomor telepon pelanggan.')
         }
-        else if(this.state.phone.trim().length < 7){
+        else if (this.state.phone.trim().length < 7) {
             alert('Nomor telepon yang dimasukkan salah. Harap diperiksa kembali.')
         }
-        else if(this.state.ctcPersonName.trim().length === 0){
+        else if (this.state.ctcPersonName.trim().length === 0) {
             alert('Harap mengisi kolom contact person.')
         }
-        else if(this.state.ctcPersonPhone.trim().length > 0 && this.state.ctcPersonPhone.trim().length < 7){
+        else if (this.state.ctcPersonPhone.trim().length > 0 && this.state.ctcPersonPhone.trim().length < 7) {
             alert('Nomor telepon contact person yang dimasukkan salah. Harap diperiksa kembali.')
         }
-        else if(this.state.password !== this.state.confirmPassword){
+        else if (this.state.password !== this.state.confirmPassword) {
             alert('Kata sandi harus sama dengan konfirmasi kata sandi.')
         }
-        else if(this.state.password.length < 8){
+        else if (this.state.password.length < 8) {
             alert('Kata sandi harus terdiri dari 8 atau lebih karakter.')
         }
-        else{
+        else {
             let token = sessionStorage.getItem('token')
-            axios.post('https://backend-pos-tap.herokuapp.com/admin/customers/add-new', {custCode: this.state.custCode.trim().toUpperCase(), password: this.state.password, confirmPassword: this.state.confirmPassword, custName: this.custCode.trim(), taxId: this.state.taxId.trim(), billToAddress: this.state.billToAddress.trim(), shipToAddress: this.state.shipToAddress.trim(), phone: this.state.phone.trim(), email: this.state.email.trim(), ctcPersonName: this.state.ctcPersonName.trim(), ctcPersonPhone:this.state.ctcPersonPhone.trim(), ctcPersonEmail: this.state.ctcPersonEmail.trim(), remarks: this.state.remarks.trim()}, { headers: { 'Authorization': `Bearer ${token}` } })
+            axios.post('https://backend-pos-tap.herokuapp.com/admin/customers/add-new', {custCode: this.state.custCode.toUpperCase(), password: this.state.password, confirmPassword: this.state.confirmPassword, custName: this.state.custName, taxId: this.state.taxId, billToAddress: this.state.billToAddress, shipToAddress: this.state.shipToAddress, phone: this.state.phone, email: this.state.email, ctcPersonName: this.state.ctcPersonName, ctcPersonPhone:this.state.ctcPersonPhone, ctcPersonEmail: this.state.ctcPersonEmail, remarks: this.state.remarks}, { headers: { 'Authorization': `Bearer ${token}` } })
             .then((res) => {
-                alert('clicked')
-                // alert(JSON.stringify(res))
+                if(res.data === 'Customer code existed.'){
+                    alert(`Kode pelanggan ${this.state.custCode.trim().toUpperCase()} sudah terdaftar sebelumnya.`)
+                }
+                else{
+                    alert('Data pelanggan baru berhasil disimpan.')
+                    this.setState({
+                        redirect: true
+                    })
+                }
             })
             .catch((err) => {
-                alert('clicked')
-                // alert(JSON.stringify(err))
+                alert(JSON.stringify(err))
             })
         }
     }
@@ -98,7 +104,7 @@ class CustomersAddNew extends React.Component {
                             <label>Kode Pelanggan</label>
                         </div>
                         <div className='col-4'>
-                            <input type='text' name='custCode' value={this.state.custCode}  tabIndex='1' onChange={this.handleInputChange} style={inputStyle} />
+                            <input type='text' name='custCode' value={this.state.custCode} tabIndex='1' onChange={this.handleInputChange} style={inputStyle} />
                         </div>
                         <div className='col-2'>
                             <label>Contact Person</label>
@@ -118,7 +124,7 @@ class CustomersAddNew extends React.Component {
                             <label>Telepon Contact Person</label>
                         </div>
                         <div className='col-4'>
-                            <input type='tel' name='ctcPersonPhone' value={this.state.ctcPersonPhone} tabIndex='9' onChange={this.handleInputChange} addInternationalOption={false} style={inputStyle}/>
+                            <input type='tel' name='ctcPersonPhone' value={this.state.ctcPersonPhone} tabIndex='9' onChange={this.handleInputChange} style={inputStyle} />
                         </div>
                     </div>
                     <div className='row' style={{ margin: '0 0 2vh 0' }}>
@@ -126,7 +132,7 @@ class CustomersAddNew extends React.Component {
                             <label>NPWP</label>
                         </div>
                         <div className='col-4'>
-                            <input type='text' name='taxId' value={this.state.taxId} tabIndex='3' onChange={this.handleInputChange} style={inputStyle} placeholder='00.000.000.0-000.000'/>
+                            <input type='text' name='taxId' value={this.state.taxId} tabIndex='3' onChange={this.handleInputChange} style={inputStyle} placeholder='00.000.000.0-000.000' />
                         </div>
                         <div className='col-2'>
                             <label>Email Contact Person</label>
@@ -158,12 +164,12 @@ class CustomersAddNew extends React.Component {
                         </div>
                         <div className='col-2'>
                             <label>Kata Sandi</label>
-                            <br/><br/>
+                            <br /><br />
                             <label>Ulangi Kata Sandi</label>
                         </div>
                         <div className='col-4'>
                             <input type='password' name='password' value={this.state.password} tabIndex='12' onChange={this.handleInputChange} style={inputStyle} />
-                            <br/><br/>
+                            <br /><br />
                             <input type='password' name='confirmPassword' value={this.state.confirmPassword} tabIndex='13' onChange={this.handleInputChange} style={inputStyle} />
                         </div>
                     </div>
@@ -188,12 +194,7 @@ class CustomersAddNew extends React.Component {
                             <input type='submit' value='Simpan' onClick={this.handleClickSubmit} style={{ padding: '0.5vh 1.5vw', background: '#FBF337', borderRadius: '5px', border: 'none', margin: '0 2.5vw' }} />
                             <Link to='/customers/customers-list'>
                                 <input type='button' value='Kembali' style={{ padding: '0.5vh 1.5vw', background: '#37FB62', borderRadius: '5px', border: 'none' }} />
-                            </Link>                       
-                        </div>
-                    </div>
-                    <div className='row' style={{ margin: '5vh 0 2vh 0' }}>
-                        <div class='col-12 text-center'>
-                            {JSON.stringify(this.state)}
+                            </Link>
                         </div>
                     </div>
                 </form>

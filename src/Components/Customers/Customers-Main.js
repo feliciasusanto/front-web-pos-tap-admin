@@ -33,7 +33,7 @@ class CustomersMain extends React.Component {
                         <td style={{ border: '1px double black', width: '15%', textAlign: 'center', padding: '0' }}>{item.code}</td>
                         <td style={{ border: '1px double black', width: '21%', textAlign: 'center', padding: '0' }}>{item.cust_name}</td>
                         <td style={{ border: '1px double black', width: '20%', textAlign: 'center', padding: '0' }}>{item.taxid}</td>
-                        <td style={{ border: '1px double black', width: '29%', textAlign: 'center', padding: '0' }}>{item.bill_to_address}</td>
+                        <td style={{ border: '1px double black', width: '29%', textAlign: 'center', padding: '0', whiteSpace: 'pre-line'}}>{item.bill_to_address}</td>
                         <td style={{ border: '1px double black', width: '15%', textAlign: 'center', padding: '0' }}>{item.phone}</td>
                         <td style={{ border: '1px double black', width: '12%', textAlign: 'center', padding: '0' }}>{item.benefit_name}</td>
                         <td style={{ border: '1px double black', width: '12%', textAlign: 'center' }}><Link to={`/customers/customer-details/${item.id}`} style={{display: 'inline-block', marginRight:'1vw'}}><img src={ico_read} alt='See' style={{ width: '4vh', height: '4vh'}} /></Link><Link to={`/customers/update-data/${item.id}`} style={{display: 'inline-block'}}><img src={ico_edit} alt='Edit' style={{ width: '4vh', height: '4vh' }} /></Link></td>
