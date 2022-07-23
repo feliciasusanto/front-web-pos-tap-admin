@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 import ico_edit from './../../assets/images/edit.png'
 
-class EmployeesMain extends React.Component {
+class PointBenefitMain extends React.Component {
     constructor(props) {
         super(props)
         this.state = { benefits: []}
@@ -81,4 +81,4 @@ class EmployeesMain extends React.Component {
     }
 }
 
-export default EmployeesMain
+export default PointBenefitMain
