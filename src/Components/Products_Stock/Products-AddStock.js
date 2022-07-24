@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import axios from 'axios'
 
-class ProductReadDetail extends React.Component {
+class ProductAddStock extends React.Component {
     constructor(props) {
         super(props)
         this.state = { items: [], productCode: '', selectedItem: {}, newStockNum: 0, redirect: false, redirectDashboard: false }
@@ -194,4 +194,4 @@ class ProductReadDetail extends React.Component {
     }
 }
 
-export default ProductReadDetail
+export default ProductAddStock
