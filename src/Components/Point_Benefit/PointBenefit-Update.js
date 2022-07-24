@@ -67,6 +67,10 @@ class PointBenefitUpdate extends React.Component {
         else if(this.state.minPoint.trim().length === 0){
             alert('Harap mengisi minimum poin atau transaksi.')
         }
+        // check is decimal
+        else if(this.state.minPoint.indexOf('.') != -1){
+            alert('Harap memasukkan angka bulat yang valid untuk minimal poin/ transaksi')
+        }
         else if(this.state.discountBenefit.trim().length === 0){
             alert('Harap mengisi diskon benefit (dalam satuan persen).')
         }
