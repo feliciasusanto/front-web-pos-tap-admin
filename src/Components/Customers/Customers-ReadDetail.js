@@ -87,7 +87,7 @@ class CustomersReadDetail extends React.Component {
                             <input type='tel' name='ctcPersonPhone' value={this.state.cust.ctcperson_phone} tabIndex='9' onChange={this.handleInputChange} style={inputStyle} disabled={true} />
                         </div>
                         <Link to='/customers/customers-list' className='col-1' style={{ display: 'inline-block' }}>
-                            <input type='button' value='Kembali' style={{ padding: '0.5vh 1.5vw', background: '#37FB62', borderRadius: '5px', border: 'none' }} />
+                            <input type='button' value='Kembali' style={{ padding: '0.5vh 1.5vw', background: '#FBF337', borderRadius: '5px', border: 'none' }} />
                         </Link>
                     </div>
                     <div className='row' style={{ margin: '0 0 2vh 0' }}>
