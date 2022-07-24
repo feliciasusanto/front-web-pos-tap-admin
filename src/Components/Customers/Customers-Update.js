@@ -2,20 +2,34 @@ import React from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import axios from 'axios'
 
-class CustomersAddNew extends React.Component {
+class CustomersUpdate extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { custCode: ' ', password: '', confirmPassword: '', custName: ' ', taxId: '', billToAddress: ' ', shipToAddress: ' ', phone: ' ', email: ' ', ctcPersonName: ' ', ctcPersonPhone: ' ', ctcPersonEmail: ' ', remarks: ' ', redirect: false, redirectDashboard: false }
+        this.state = { cust_id: parseInt(window.location.pathname.split('/')[3]), cust: {}, custCode: '', password: '', confirmPassword: '', custName: '', taxId: '', billToAddress: '', shipToAddress: '', phone: '', email: '', ctcPersonName: '', ctcPersonPhone: '', ctcPersonEmail: '', remarks: '', createdAt: '', createdBy: '', redirect: false, redirectDashboard: false }
         this.handleInputChange = this.handleInputChange.bind(this)
         this.handleClickSubmit = this.handleClickSubmit.bind(this)
     }
 
     componentDidMount() {
         let token = sessionStorage.getItem('token')
-        axios.get('https://backend-pos-tap.herokuapp.com/admin/customers/list', { headers: { 'Authorization': `Bearer ${token}` } })
+        axios.get(`https://backend-pos-tap.herokuapp.com/admin/customers/update-data/${this.state.cust_id}`, { headers: { 'Authorization': `Bearer ${token}` } })
             .then((res) => {
                 this.setState({
-                    custs: res.data
+                    custCode: res.data.code,
+                    custName: res.data.name,
+                    taxId: res.data.taxid,
+                    billToAddress: res.data.bill_to_address,
+                    shipToAddress: res.data.ship_to_address,
+                    phone: res.data.phone,
+                    email: res.data.email,
+                    ctcPersonName: res.data.ctcperson,
+                    ctcPersonPhone: res.data.ctcperson_phone,
+                    ctcPersonEmail: res.data.ctcperson_email,
+                    remarks: res.data.remarks,
+                    createdAt: res.data.created_at,
+                    createdBy: res.data.created_by,
+                    password: res.data.password,
+                    confirmPassword: res.data.password
                 })
             })
             .catch((err) => {
@@ -76,20 +90,19 @@ class CustomersAddNew extends React.Component {
             alert('Nomor telepon contact person yang dimasukkan salah. Harap diperiksa kembali.')
         }
         else if (this.state.password !== this.state.confirmPassword) {
-            alert('Kata sandi harus sama dengan konfirmasi kata sandi.')
+            alert('Kata sandi harus sama dengan konfirmasi/ ulangi kata sandi.')
         }
         else if (this.state.password.length < 8) {
             alert('Kata sandi harus terdiri dari 8 atau lebih karakter.')
         }
         else {
             let token = sessionStorage.getItem('token')
-            axios.post('https://backend-pos-tap.herokuapp.com/admin/customers/add-new', { custCode: this.state.custCode.toUpperCase(), password: this.state.password, confirmPassword: this.state.confirmPassword, custName: this.state.custName, taxId: this.state.taxId, billToAddress: this.state.billToAddress, shipToAddress: this.state.shipToAddress, phone: this.state.phone, email: this.state.email, ctcPersonName: this.state.ctcPersonName, ctcPersonPhone: this.state.ctcPersonPhone, ctcPersonEmail: this.state.ctcPersonEmail, remarks: this.state.remarks }, { headers: { 'Authorization': `Bearer ${token}` } })
+            axios.post(`https://backend-pos-tap.herokuapp.com/admin/customers/update-data/${this.state.cust_id}`, { custCode: this.state.custCode.toUpperCase(), password: this.state.password, confirmPassword: this.state.confirmPassword, custName: this.state.custName, taxId: this.state.taxId, billToAddress: this.state.billToAddress, shipToAddress: this.state.shipToAddress, phone: this.state.phone, email: this.state.email, ctcPersonName: this.state.ctcPersonName, ctcPersonPhone: this.state.ctcPersonPhone, ctcPersonEmail: this.state.ctcPersonEmail, remarks: this.state.remarks }, { headers: { 'Authorization': `Bearer ${token}` } })
                 .then((res) => {
-                    alert('Data pelanggan baru berhasil disimpan.')
+                    alert('Data pelanggan berhasil disimpan.')
                     this.setState({
                         redirect: true
                     })
-                    
                 })
                 .catch((err) => {
                     if (err.response.data === 'Customer code existed.') {
@@ -103,7 +116,7 @@ class CustomersAddNew extends React.Component {
     }
 
     render() {
-        let inputStyle = { background: 'lightgrey', border: 'none', borderRadius: '5px', width: '100%' }
+        let inputStyle = { color: 'black', background: 'lightgrey', border: 'none', borderRadius: '5px', width: '100%' }
 
         if (this.state.redirect == true) {
             return (<Navigate to='/customers/customers-list' />)
@@ -120,7 +133,7 @@ class CustomersAddNew extends React.Component {
                     <div className='col-12'>
                         <h4>Pelanggan</h4>
                         <hr style={{ background: 'black' }} />
-                        <h5>Tambah Pelanggan</h5>
+                        <h5>Ubah Data Pelanggan</h5>
                     </div>
                 </div>
                 <div className='row' style={{ height: '3vh' }}></div>
@@ -138,6 +151,7 @@ class CustomersAddNew extends React.Component {
                         </div>
                         <div className='col-3'>
                             <input type='text' name='ctcPersonName' value={this.state.ctcPersonName} tabIndex='8' onChange={this.handleInputChange} style={inputStyle} />
+
                         </div>
                         <div className='col'></div>
                     </div>
@@ -155,14 +169,18 @@ class CustomersAddNew extends React.Component {
                         <div className='col-3'>
                             <input type='tel' name='ctcPersonPhone' value={this.state.ctcPersonPhone} tabIndex='9' onChange={this.handleInputChange} style={inputStyle} />
                         </div>
-                        <div className='col'></div>
+
+                        <div className='col-1' style={{ display: 'inline-block' }}>
+                            <input type='submit' value='Simpan' onClick={this.handleClickSubmit} style={{ padding: '0.5vh 1.5vw', background: '#FBF337', borderRadius: '5px', border: 'none' }} />
+                        </div>
+
                     </div>
                     <div className='row' style={{ margin: '0 0 2vh 0' }}>
                         <div className='col-2'>
                             <label>NPWP</label>
                         </div>
                         <div className='col-3'>
-                            <input type='text' name='taxId' value={this.state.taxId} tabIndex='3' onChange={this.handleInputChange} style={inputStyle} placeholder='00.000.000.0-000.000' />
+                            <input type='text' name='taxId' value={this.state.taxId} tabIndex='3' onChange={this.handleInputChange} style={inputStyle} />
                         </div>
                         <div className='col'></div>
                         <div className='col-2'>
@@ -171,21 +189,24 @@ class CustomersAddNew extends React.Component {
                         <div className='col-3'>
                             <input type='email' name='ctcPersonEmail' value={this.state.ctcPersonEmail} tabIndex='10' onChange={this.handleInputChange} style={inputStyle} />
                         </div>
-                        <div className='col'></div>
+
+                        <Link to='/customers/customers-list' className='col-1' style={{ display: 'inline-block' }}>
+                            <input type='button' value='Kembali' style={{ padding: '0.5vh 1.5vw', background: '#37FB62', borderRadius: '5px', border: 'none' }} />
+                        </Link>
                     </div>
                     <div className='row' style={{ margin: '0 0 2vh 0' }}>
                         <div className='col-2'>
                             <label>Alamat Penagihan</label>
                         </div>
                         <div className='col-3'>
-                            <textarea name='billToAddress' value={this.state.billToAddress} tabIndex='4' onChange={this.handleInputChange} style={{ background: 'lightgrey', border: 'none', borderRadius: '5px', width: '100%', minHeight: '12vh' }} />
+                            <textarea name='billToAddress' value={this.state.billToAddress} tabIndex='4' onChange={this.handleInputChange} style={{ color: 'black', background: 'lightgrey', border: 'none', borderRadius: '5px', width: '100%', minHeight: '12vh' }} />
                         </div>
                         <div className='col'></div>
                         <div className='col-2'>
                             <label>Catatan</label>
                         </div>
                         <div className='col-3'>
-                            <textarea type='text' name='remarks' value={this.state.remarks} tabIndex='11' onChange={this.handleInputChange} style={{ background: 'lightgrey', border: 'none', borderRadius: '5px', width: '100%', minHeight: '12vh' }} />
+                            <textarea type='text' name='remarks' value={this.state.remarks} tabIndex='11' onChange={this.handleInputChange} style={{ color: 'black', background: 'lightgrey', border: 'none', borderRadius: '5px', width: '100%', minHeight: '12vh' }} />
                         </div>
                         <div className='col'></div>
                     </div>
@@ -210,12 +231,30 @@ class CustomersAddNew extends React.Component {
                         <div className='col'></div>
                     </div>
                     <div className='row' style={{ margin: '0 0 2vh 0' }}>
+                        <div className='col-5'>
+                            <label></label>
+                        </div>
+                        <div className='col'></div>
+                        <div className='col-5'>
+                            <p style={{ color: 'red', fontSize: '1vw', margin: 0 }}>Harap untuk tidak mengubah isi dari kolom kata sandi baru dan ulangi kata sandi baru jika tidak ingin melakukan reset/ ubah kata sandi secara paksa.</p>
+                        </div>
+                        <div className='col'></div>
+                    </div>
+                    <div className='row' style={{ margin: '0 0 2vh 0' }}>
                         <div className='col-2'>
                             <label>Telepon</label>
                         </div>
                         <div className='col-3'>
                             <input type='tel' name='phone' value={this.state.phone} tabIndex='6' onChange={this.handleInputChange} style={inputStyle} />
                         </div>
+                        <div className='col'></div>
+                        <div className='col-2'>
+                            <label>Dibuat Oleh</label>
+                        </div>
+                        <div className='col-3'>
+                            <input type='text' name='createdBy' value={this.state.createdBy} tabIndex='9' onChange={this.handleInputChange} style={inputStyle} disabled={true} />
+                        </div>
+                        <div className='col'></div>
                     </div>
                     <div className='row' style={{ margin: '0 0 2vh 0' }}>
                         <div className='col-2'>
@@ -225,11 +264,11 @@ class CustomersAddNew extends React.Component {
                             <input type='email' name='email' value={this.state.email} tabIndex='7' onChange={this.handleInputChange} style={inputStyle} />
                         </div>
                         <div className='col'></div>
-                        <div class='col-5 text-center'>
-                            <input type='submit' value='Simpan' onClick={this.handleClickSubmit} style={{ padding: '0.5vh 1.5vw', background: '#FBF337', borderRadius: '5px', border: 'none', margin: '0 2.5vw' }} />
-                            <Link to='/customers/customers-list'>
-                                <input type='button' value='Kembali' style={{ padding: '0.5vh 1.5vw', background: '#37FB62', borderRadius: '5px', border: 'none' }} />
-                            </Link>
+                        <div className='col-2'>
+                            <label>Dibuat pada</label>
+                        </div>
+                        <div className='col-3'>
+                            <input type='text' name='createdAt' value={this.state.createdAt} tabIndex='9' onChange={this.handleInputChange} style={inputStyle} disabled={true} />
                         </div>
                         <div className='col'></div>
                     </div>
@@ -239,4 +278,4 @@ class CustomersAddNew extends React.Component {
     }
 }
 
-export default CustomersAddNew
+export default CustomersUpdate

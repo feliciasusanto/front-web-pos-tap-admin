@@ -30,7 +30,7 @@ class CustomersReadDetail extends React.Component {
     }
 
     render() {
-        let inputStyle = { background: 'lightgrey', border: 'none', borderRadius: '5px', width: '100%' }
+        let inputStyle = { color: 'black', background: 'lightgrey', border: 'none', borderRadius: '5px', width: '100%' }
 
         if (this.state.redirect == true) {
             return (<Navigate to='/customers/customers-list' />)
@@ -108,14 +108,14 @@ class CustomersReadDetail extends React.Component {
                             <label>Alamat Penagihan</label>
                         </div>
                         <div className='col-3'>
-                            <textarea name='billToAddress' value={this.state.cust.bill_to_address} tabIndex='4' onChange={this.handleInputChange} style={{ background: 'lightgrey', border: 'none', borderRadius: '5px', width: '100%', minHeight: '12vh' }} disabled={true} />
+                            <textarea name='billToAddress' value={this.state.cust.bill_to_address} tabIndex='4' onChange={this.handleInputChange} style={{ color: 'black', background: 'lightgrey', border: 'none', borderRadius: '5px', width: '100%', minHeight: '12vh' }} disabled={true} />
                         </div>
                         <div className='col'></div>
                         <div className='col-2'>
                             <label>Catatan</label>
                         </div>
                         <div className='col-3'>
-                            <textarea type='text' name='remarks' value={this.state.cust.remarks} tabIndex='11' onChange={this.handleInputChange} style={{ background: 'lightgrey', border: 'none', borderRadius: '5px', width: '100%', minHeight: '12vh' }} disabled={true} />
+                            <textarea type='text' name='remarks' value={this.state.cust.remarks} tabIndex='11' onChange={this.handleInputChange} style={{ color: 'black', background: 'lightgrey', border: 'none', borderRadius: '5px', width: '100%', minHeight: '12vh' }} disabled={true} />
                         </div>
                         <div className='col'></div>
                     </div>
@@ -124,7 +124,7 @@ class CustomersReadDetail extends React.Component {
                             <label>Alamat Kirim</label>
                         </div>
                         <div className='col-3'>
-                            <textarea name='shipToAddress' value={this.state.cust.ship_to_address} tabIndex='5' onChange={this.handleInputChange} style={{ background: 'lightgrey', border: 'none', borderRadius: '5px', width: '100%', minHeight: '12vh' }} disabled={true} />
+                            <textarea name='shipToAddress' value={this.state.cust.ship_to_address} tabIndex='5' onChange={this.handleInputChange} style={{ color: 'black', background: 'lightgrey', border: 'none', borderRadius: '5px', width: '100%', minHeight: '12vh' }} disabled={true} />
                         </div>
                     </div>
                     <div className='row' style={{ margin: '0 0 2vh 0' }}>
@@ -161,10 +161,10 @@ class CustomersReadDetail extends React.Component {
                     </div>
                     <div className='row' style={{ margin: '0 0 2vh 0' }}>
                         <div className='col-2'>
-                            <label>Telepon</label>
+                            <label>Jumlah Poin/ Transaksi</label>
                         </div>
                         <div className='col-3'>
-                            <input type='tel' name='phone' value={this.state.cust.phone} tabIndex='6' onChange={this.handleInputChange} style={inputStyle} disabled={true} />
+                            <input type='number' name='benefitPoint' value={this.state.cust.benefit_point} tabIndex='7' onChange={this.handleInputChange} style={inputStyle} disabled={true} />
                         </div>
                         <div className='col'></div>
                         <div className='col-2'>
@@ -177,10 +177,10 @@ class CustomersReadDetail extends React.Component {
                     </div>
                     <div className='row' style={{ margin: '0 0 2vh 0' }}>
                         <div className='col-2'>
-                            <label>Jumlah Poin/ Transaksi</label>
+                            <label>Benefit</label>
                         </div>
                         <div className='col-3'>
-                            <input type='number' name='benefitPoint' value={this.state.cust.benefit_point} tabIndex='7' onChange={this.handleInputChange} style={inputStyle} disabled={true} />
+                            <input type='text' name='benefitName' value={this.state.cust.benefit_name} tabIndex='7' onChange={this.handleInputChange} style={inputStyle} disabled={true} />
                         </div>
                         <div className='col'></div>
                         <div className='col-2'>
@@ -191,15 +191,10 @@ class CustomersReadDetail extends React.Component {
                         </div>
                         <div className='col'></div>
                     </div>
-                    <div className='row' style={{ margin: '0 0 2vh 0' }}>
-                        <div className='col-2'>
-                            <label>Benefit</label>
-                        </div>
-                        <div className='col-3'>
-                            <input type='text' name='benefitName' value={this.state.cust.benefit_name} tabIndex='7' onChange={this.handleInputChange} style={inputStyle} disabled={true} />
-                        </div>
-                    </div>
                 </form>
+                <div className='row' style={{ height: '5vh' }}>
+                    <div className='col'></div>
+                </div>
             </div>
         )
     }
