@@ -7,7 +7,6 @@ class ProductsStockReport extends React.Component {
         super(props)
         this.state = { time: '', items: [], redirectDashboard: false }
         this.productsListTable = this.productsListTable.bind(this)
-        this.handleClickSubmit = this.handleClickSubmit.bind(this)
     }
 
     componentDidMount() {
