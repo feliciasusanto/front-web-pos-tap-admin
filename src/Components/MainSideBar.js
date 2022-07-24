@@ -13,26 +13,26 @@ class Sidebar extends React.Component {
         this.state = { redirectLogin: false }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         let token = sessionStorage.getItem('token')
         axios.get('https://backend-pos-tap.herokuapp.com/admin/token-validation', { headers: { 'Authorization': `Bearer ${token}` } })
-        .then((res) => {})
-        .catch((err) => {
-            if(err.response.status === 403){
-                alert('Session invalid. Harap kembali melakukan login.')
-                sessionStorage.clear()
-                this.setState({
-                    redirectLogin: true
-                })
-            }
-        })
+            .then((res) => { })
+            .catch((err) => {
+                if (err.response.status === 403) {
+                    alert('Session invalid. Harap kembali melakukan login.')
+                    sessionStorage.clear()
+                    this.setState({
+                        redirectLogin: true
+                    })
+                }
+            })
     }
 
     render() {
         let linkStyle = { padding: '0 0.5vw', fontSize: '1.9vh', textDecoration: 'none', color: 'black', textAlign: 'center' }
 
-        if (this.state.redirectLogin === true){
-            return(<Navigate to='/login'/>)
+        if (this.state.redirectLogin === true) {
+            return (<Navigate to='/login' />)
         }
 
         return (
@@ -44,9 +44,9 @@ class Sidebar extends React.Component {
                     </div>
 
                     <ul className="dropdown-menu">
-                        <li style={{textAlign: 'center', background:'white'}}><Link to='/employees/roles-employees-list' style={linkStyle}>Daftar Peran & Pengguna</Link></li>
+                        <li style={{ textAlign: 'center', background: 'white' }}><Link to='/employees/roles-employees-list' style={linkStyle}>Daftar Peran & Pengguna</Link></li>
                         <hr className="dropdown-divider"></hr>
-                        <li style={{textAlign: 'center', background:'white'}}><Link to='/employees/add-new-employee' style={linkStyle}>Tambah Pengguna</Link></li>
+                        <li style={{ textAlign: 'center', background: 'white' }}><Link to='/employees/add-new-employee' style={linkStyle}>Tambah Pengguna</Link></li>
                     </ul>
                 </div>
                 <div className="btn-group dropend">
@@ -56,7 +56,7 @@ class Sidebar extends React.Component {
                     </div>
 
                     <ul className="dropdown-menu">
-                        <li style={{textAlign: 'center', background:'white'}}><Link to='/point-benefit/point-benefit-list' style={linkStyle}>Daftar Point Benefit</Link></li>
+                        <li style={{ textAlign: 'center', background: 'white' }}><Link to='/point-benefit/point-benefit-list' style={linkStyle}>Daftar Point Benefit</Link></li>
                     </ul>
                 </div>
                 <div className="btn-group dropend">
@@ -66,9 +66,9 @@ class Sidebar extends React.Component {
                     </div>
 
                     <ul className="dropdown-menu">
-                        <li style={{textAlign: 'center', background:'white'}}><Link to='/customers/customers-list' style={linkStyle}>Daftar Pelanggan</Link></li>
+                        <li style={{ textAlign: 'center', background: 'white' }}><Link to='/customers/customers-list' style={linkStyle}>Daftar Pelanggan</Link></li>
                         <hr className="dropdown-divider"></hr>
-                        <li style={{textAlign: 'center', background:'white'}}><Link to='/customers/add-new-customer' style={linkStyle}>Tambah Pelanggan</Link></li>
+                        <li style={{ textAlign: 'center', background: 'white' }}><Link to='/customers/add-new-customer' style={linkStyle}>Tambah Pelanggan</Link></li>
                     </ul>
                 </div>
                 <div className="btn-group dropend">
@@ -78,11 +78,11 @@ class Sidebar extends React.Component {
                     </div>
 
                     <ul className="dropdown-menu">
-                        <li style={{textAlign: 'center', background:'white'}}><Link to='/sales/sales-list' style={linkStyle}>Daftar Penjualan</Link></li>
+                        <li style={{ textAlign: 'center', background: 'white' }}><Link to='/sales/sales-list' style={linkStyle}>Daftar Penjualan</Link></li>
                         <hr className="dropdown-divider"></hr>
-                        <li style={{textAlign: 'center', background:'white'}}><Link to='/sales/add-new-sales' style={linkStyle}>Tambah Penjualan</Link></li>
+                        <li style={{ textAlign: 'center', background: 'white' }}><Link to='/sales/add-new-sales' style={linkStyle}>Tambah Penjualan</Link></li>
                         <hr className="dropdown-divider"></hr>
-                        <li style={{textAlign: 'center', background:'white'}}><Link to='/sales/sales-report' style={linkStyle}>Laporan Penjualan</Link></li>
+                        <li style={{ textAlign: 'center', background: 'white' }}><Link to='/sales/sales-report' style={linkStyle}>Laporan Penjualan</Link></li>
                     </ul>
                 </div>
                 <div className="btn-group dropend">
@@ -92,15 +92,15 @@ class Sidebar extends React.Component {
                     </div>
 
                     <ul className="dropdown-menu">
-                        <li style={{textAlign: 'center', background:'white'}}><Link to='/products/product-stock-list' style={linkStyle}>Daftar Barang dan Stok</Link></li>
+                        <li style={{ textAlign: 'center', background: 'white' }}><Link to='/products/search-product-stock' style={linkStyle}>Cari Barang dan Stok</Link></li>
                         <hr className="dropdown-divider"></hr>
-                        <li style={{textAlign: 'center', background:'white'}}><Link to='/products/search-product-stock' style={linkStyle}>Cari Barang dan Stok</Link></li>
+                        <li style={{ textAlign: 'center', background: 'white' }}><Link to='/products/product-stock-list' style={linkStyle}>Daftar Barang dan Stok</Link></li>
                         <hr className="dropdown-divider"></hr>
-                        <li style={{textAlign: 'center', background:'white'}}><Link to='/products/add-new-product' style={linkStyle}>Tambah Barang</Link></li>
+                        <li style={{ textAlign: 'center', background: 'white' }}><Link to='/products/add-new-product' style={linkStyle}>Tambah Barang</Link></li>
                         <hr className="dropdown-divider"></hr>
-                        <li style={{textAlign: 'center', background:'white'}}><Link to='/products/add-new-product-stock' style={linkStyle}>Tambah Stok</Link></li>
+                        <li style={{ textAlign: 'center', background: 'white' }}><Link to='/products/add-new-product-stock' style={linkStyle}>Tambah Stok</Link></li>
                         <hr className="dropdown-divider"></hr>
-                        <li style={{textAlign: 'center', background:'white'}}><Link to='/products/product-stock-report' style={linkStyle}>Laporan Stok Barang</Link></li>
+                        <li style={{ textAlign: 'center', background: 'white' }}><Link to='/products/product-stock-report' style={linkStyle}>Laporan Stok Barang</Link></li>
                     </ul>
                 </div>
             </div>
