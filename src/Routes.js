@@ -21,6 +21,7 @@ import ProductsDetail from './Routes/Products_Stock/ProductsReadDetailProductRou
 import ProductsUpdateData from './Routes/Products_Stock/ProductsUpdateDataRoute.js'
 import ProductsAddStock from './Routes/Products_Stock/ProductsAddStockRoute.js'
 import ProductsSearchStock from './Routes/Products_Stock/ProductsSearchStockRoute.js'
+import ProductStockReport from './Routes/Products_Stock/ProductsStockReportRoute.js'
 
 const AppRoutes = () => {
     return(
@@ -46,6 +47,7 @@ const AppRoutes = () => {
             <Route exact path='/products/update-data/:id' element={<ProductsUpdateData/>}></Route>
             <Route exact path='/products/add-product-stock' element={<ProductsAddStock/>}></Route>
             <Route exact path='/products/search-product-stock' element={<ProductsSearchStock/>}></Route>
+            <Route exact path='/products/stock-report' element={<ProductStockReport/>}></Route>
         </Routes>
     )
 }

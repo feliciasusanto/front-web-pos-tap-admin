@@ -69,7 +69,6 @@ class ProductUpdateData extends React.Component {
             let token = sessionStorage.getItem('token')
             axios.post(`https://backend-pos-tap.herokuapp.com/admin/products/update-data/${this.state.product_code}`, { itemCode: this.state.itemCode.toUpperCase(), itemName: this.state.itemName, itemBrand: this.state.itemBrand, itemSupplier: this.state.itemSupplier, itemDescription: this.state.itemDescription }, { headers: { 'Authorization': `Bearer ${token}` } })
             .then((res) => {
-                alert(JSON.stringify({ itemCode: this.state.itemCode.toUpperCase(), itemName: this.state.itemName, itemBrand: this.state.itemBrand, itemSupplier: this.state.itemSupplier, itemDescription: this.state.itemDescription }))
                 alert(`Data barang dengan kode ${this.state.itemCode.toUpperCase()} berhasil diubah.`)
                 this.setState({
                     redirect: true

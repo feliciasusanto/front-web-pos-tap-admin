@@ -1,22 +1,22 @@
 import React from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import axios from 'axios'
-import ico_read from './../../assets/images/binoculars.png'
-import ico_edit from './../../assets/images/edit.png'
 
-class ProductsStockMain extends React.Component {
+class ProductsStockReport extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { products: [], redirectDashboard: false }
+        this.state = { time: '', items: [], redirectDashboard: false }
         this.productsListTable = this.productsListTable.bind(this)
+        this.handleClickSubmit = this.handleClickSubmit.bind(this)
     }
 
     componentDidMount() {
         let token = sessionStorage.getItem('token')
-        axios.get('https://backend-pos-tap.herokuapp.com/admin/products/product-list', { headers: { 'Authorization': `Bearer ${token}` } })
+        axios.get('https://backend-pos-tap.herokuapp.com/admin/products/stock-report', { headers: { 'Authorization': `Bearer ${token}` } })
             .then((res) => {
                 this.setState({
-                    products: res.data
+                    time: res.data.current_time,
+                    items: res.data.items
                 })
             })
             .catch((err) => {
@@ -26,7 +26,7 @@ class ProductsStockMain extends React.Component {
                         redirectDashboard: true
                     })
                 }
-                else if(err.response.status === 401){
+                else if (err.response.status === 401) {
 
                 }
                 else {
@@ -47,8 +47,8 @@ class ProductsStockMain extends React.Component {
                         <td style={{ border: '1px double black', width: '15%', textAlign: 'center', padding: '0' }}>{item.name}</td>
                         <td style={{ border: '1px double black', width: '10%', textAlign: 'center', padding: '0' }}>{item.brand}</td>
                         <td style={{ border: '1px double black', width: '12%', textAlign: 'center', padding: '0' }}>{item.supplier_name}</td>
-                        <td style={{ border: '1px double black', width: '8%', textAlign: 'center', padding: '0'}}>{item.stock_qty}</td>
-                        <td style={{ border: '1px double black', width: '8%', textAlign: 'center' }}><Link to={`/products/product-details/${item.code}`} style={{ display: 'inline-block', marginRight: '1vw' }}><img src={ico_read} alt='See' style={{ width: '4vh', height: '4vh' }} /></Link><Link to={`/products/update-data/${item.code}`} style={{ display: 'inline-block' }}><img src={ico_edit} alt='Edit' style={{ width: '4vh', height: '4vh' }} /></Link></td>
+                        <td style={{ border: '1px double black', width: '8%', textAlign: 'center', padding: '0' }}>{item.stock_qty}</td>
+                        <td style={{ border: '1px double black', width: '18%', textAlign: 'center', whiteSpace: 'pre-line' }}>{item.description}</td>
                     </tr>
                 )
             })
@@ -63,7 +63,7 @@ class ProductsStockMain extends React.Component {
                         <th style={{ border: '1px double black', fontWeight: 'normal', width: '10%', textAlign: 'center', padding: '0' }}>Merk</th>
                         <th style={{ border: '1px double black', fontWeight: 'normal', width: '12%', textAlign: 'center', padding: '0' }}>Supplier</th>
                         <th style={{ border: '1px double black', fontWeight: 'normal', width: '8%', textAlign: 'center', padding: '0' }}>Stok Tersedia</th>
-                        <th style={{ border: '1px double black', fontWeight: 'normal', width: '8%', textAlign: 'center', padding: '0' }}>Aksi</th>
+                        <th style={{ border: '1px double black', fontWeight: 'normal', width: '18%', textAlign: 'center', padding: '0' }}>Deskripsi/ Keterangan</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -87,25 +87,28 @@ class ProductsStockMain extends React.Component {
                         <hr style={{ background: 'black' }} />
                     </div>
                 </div>
-                <div className='row' style={{ height: '10vh', textAlign: 'right' }}>
-                    <Link className='col-2' to='/products/add-new-product' style={{ textAlign: 'center', height: '5vh', width: '10vw', fontSize: '2.1vh', color: 'black', textDecoration: 'none', padding: '0.8vh 1.5vw', background: '#FBF337', borderRadius: '5px', border: 'none', marginLeft: '1vw' }}>Tambah Barang</Link>
-                    <div className='col-1'></div>
-                    <Link className='col-2' to='/products/add-product-stock' style={{ textAlign: 'center', height: '5vh', width: '10vw', fontSize: '2.1vh', color: 'black', textDecoration: 'none', padding: '0.8vh 1.5vw', background: '#FBF337', borderRadius: '5px', border: 'none' }}>Tambah Stok</Link>
-                    <div className='col-1'></div>
-                    <Link className='col-2' to='/products/search-product-stock' style={{ textAlign: 'center', height: '5vh', width: '10vw', fontSize: '2.1vh', color: 'black', textDecoration: 'none', padding: '0.8vh 0.2vw', background: '#FBF337', borderRadius: '5px', border: 'none' }}>Cari Barang dan Stok</Link>
-                    <div className='col-1'></div>
-                    <Link className='col-2' to='/products/stock-report' style={{ textAlign: 'center', height: '5vh', width: '10vw', fontSize: '2.1vh', color: 'black', textDecoration: 'none', padding: '0.8vh 1.5vw', background: '#FBF337', borderRadius: '5px', border: 'none' }}>Laporan Stok</Link>
+                <div className='row'>
+                    <div className='col-12'>
+                        <h5>Laporan Stok</h5>
+                    </div>
                 </div>
                 <div className='row'>
                     <div className='col-12'>
-                        <h5>Daftar Barang dan Stok</h5>
+                        <p>Tanggal dan waktu laporan : {this.state.time}</p>
                     </div>
                 </div>
-                {this.productsListTable(this.state.products)}
-                <div className='row' style={{ height: '5vh' }}></div>
+                <div className='row'>
+                    <div className='col-2'>
+                        <input type='submit' value='Download' onClick={this.handleClickSubmit} style={{ padding: '0.5vh 1.5vw', background: '#FBF337', borderRadius: '5px', border: 'none' }} />
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col-12'><br/></div>
+                </div>
+                {this.productsListTable(this.state.items)}
             </div>
         )
     }
 }
 
-export default ProductsStockMain
+export default ProductsStockReport
