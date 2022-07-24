@@ -60,7 +60,7 @@ class ProductReadDetail extends React.Component {
                     <div className='col-12'>
                         <h4>Barang dan Stok</h4>
                         <hr style={{ background: 'black' }} />
-                        <h5>Tambah Barang</h5>
+                        <h5>Data Lengkap Barang</h5>
                     </div>
                 </div>
                 <div className='row' style={{ height: '3vh' }}></div>
