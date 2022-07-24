@@ -98,7 +98,7 @@ class Sidebar extends React.Component {
                         <hr className="dropdown-divider"></hr>
                         <li style={{ textAlign: 'center', background: 'white' }}><Link to='/products/add-new-product' style={linkStyle}>Tambah Barang</Link></li>
                         <hr className="dropdown-divider"></hr>
-                        <li style={{ textAlign: 'center', background: 'white' }}><Link to='/products/add-new-product-stock' style={linkStyle}>Tambah Stok</Link></li>
+                        <li style={{ textAlign: 'center', background: 'white' }}><Link to='/products/add-product-stock' style={linkStyle}>Tambah Stok</Link></li>
                         <hr className="dropdown-divider"></hr>
                         <li style={{ textAlign: 'center', background: 'white' }}><Link to='/products/product-stock-report' style={linkStyle}>Laporan Stok Barang</Link></li>
                     </ul>

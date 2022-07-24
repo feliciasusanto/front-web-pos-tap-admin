@@ -8,6 +8,7 @@ class EmployeesUpdate extends React.Component {
         this.state = { user_id: parseInt(window.location.pathname.split('/')[3]), roles: [], username: '', password: '', confirmPassword: '', role: 'Superuser', activeStatus: 'Aktif', redirect: false, redirectDashboard: false }
         this.roleListCombo = this.roleListCombo.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this)
+        this.handleSelectChange = this.handleSelectChange.bind(this)
         this.handleClickSubmit = this.handleClickSubmit.bind(this)
     }
 

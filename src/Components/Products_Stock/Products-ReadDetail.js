@@ -5,7 +5,7 @@ import axios from 'axios'
 class ProductReadDetail extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {  product_code: window.location.pathname.split('/')[3], item: {}, itemCode: '', itemName: '', itemBrand: '', itemSupplier: '', itemDescription: '', stockQty: 0, createdAt: '', createdBy: '', lastUpdatedAt: '', lastUpdatedBy: '', redirect: false, redirectDashboard: false }
+        this.state = {  product_code: window.location.pathname.split('/')[3], itemCode: '', itemName: '', itemBrand: '', itemSupplier: '', itemDescription: '', stockQty: 0, createdAt: '', createdBy: '', lastUpdatedAt: '', lastUpdatedBy: '', redirect: false, redirectDashboard: false }
     }
 
     componentDidMount() {

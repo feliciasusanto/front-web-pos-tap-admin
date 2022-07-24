@@ -90,7 +90,7 @@ class ProductsStockMain extends React.Component {
                 <div className='row' style={{ height: '10vh', textAlign: 'right' }}>
                     <Link className='col-2' to='/products/add-new-product' style={{ textAlign: 'center', height: '5vh', width: '10vw', fontSize: '2.1vh', color: 'black', textDecoration: 'none', padding: '0.8vh 1.5vw', background: '#FBF337', borderRadius: '5px', border: 'none', marginLeft: '1vw' }}>Tambah Barang</Link>
                     <div className='col-1'></div>
-                    <Link className='col-2' to='/products/add-new-product-stock' style={{ textAlign: 'center', height: '5vh', width: '10vw', fontSize: '2.1vh', color: 'black', textDecoration: 'none', padding: '0.8vh 1.5vw', background: '#FBF337', borderRadius: '5px', border: 'none' }}>Tambah Stok</Link>
+                    <Link className='col-2' to='/products/add-product-stock' style={{ textAlign: 'center', height: '5vh', width: '10vw', fontSize: '2.1vh', color: 'black', textDecoration: 'none', padding: '0.8vh 1.5vw', background: '#FBF337', borderRadius: '5px', border: 'none' }}>Tambah Stok</Link>
                     <div className='col-1'></div>
                     <Link className='col-2' to='/products/search-product-stock' style={{ textAlign: 'center', height: '5vh', width: '10vw', fontSize: '2.1vh', color: 'black', textDecoration: 'none', padding: '0.8vh 0.2vw', background: '#FBF337', borderRadius: '5px', border: 'none' }}>Cari Barang dan Stok</Link>
                     <div className='col-1'></div>
