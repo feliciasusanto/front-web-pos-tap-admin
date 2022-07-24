@@ -5,9 +5,26 @@ import axios from 'axios'
 class PointBenefitAddNew extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { benefitName: '', minPoint: '', discountBenefit: '', activeStatus: 'Aktif', redirect: false }
+        this.state = { benefitName: '', minPoint: '', discountBenefit: '', activeStatus: 'Aktif', redirect: false, redirectDashboard: false }
         this.handleInputChange = this.handleInputChange.bind(this)
         this.handleClickSubmit = this.handleClickSubmit.bind(this)
+    }
+
+    componentDidMount(){
+        let token = sessionStorage.getItem('token')
+        axios.get('https://backend-pos-tap.herokuapp.com/admin/point-benefits/list', { headers: { 'Authorization': `Bearer ${token}` } })
+            .then((res) => {})
+            .catch((err) => {
+                if (err.response.status === 401) {
+                    alert('Anda tidak memiliki akses untuk bagian ini.')
+                    this.setState({
+                        redirectDashboard: true
+                    })
+                }
+                else {
+                    alert(JSON.stringify(err.response))
+                }
+            })
     }
 
     handleInputChange = (event) => {
@@ -30,40 +47,47 @@ class PointBenefitAddNew extends React.Component {
 
     handleClickSubmit = (event) => {
         event.preventDefault()
-        if(this.state.benefitName.trim().length === 0){
+        if (this.state.benefitName.trim().length === 0) {
             alert('Harap mengisi nama benefit.')
         }
-        else if(this.state.benefitName.trim().length > 10){
+        else if (this.state.benefitName.trim().length > 10) {
             alert('Nama benefit tidak boleh melebihi 10 karakter.')
         }
-        else if(this.state.minPoint.trim().length === 0){
+        else if (this.state.minPoint.trim().length === 0) {
             alert('Harap mengisi minimum poin atau transaksi.')
         }
-        else if(this.state.discountBenefit.trim().length === 0){
+        else if (this.state.discountBenefit.trim().length === 0) {
             alert('Harap mengisi diskon benefit (dalam satuan persen).')
         }
-        else{
+        else {
             let token = sessionStorage.getItem('token')
             axios.post('https://backend-pos-tap.herokuapp.com/admin/point-benefits/add-new', { benefitName: this.state.benefitName, minPoint: parseInt(this.state.minPoint), discountBenefit: parseFloat(this.state.discountBenefit), activeStatus: this.state.activeStatus }, { headers: { 'Authorization': `Bearer ${token}` } })
                 .then((res) => {
-                    if(res.data === 'Benefit name has been registered previously.'){
+                    alert(`Benefit dengan nama ${this.state.benefitName} berhasil disimpan.`)
+                    this.setState({
+                        redirect: true
+                    })
+                }
+                )
+                .catch((err) => {
+                    if (err.response.data === 'Benefit name has been registered previously.') {
                         alert(`Nama benefit ${this.state.benefitName} sudah terdaftar sebelumnya.`)
                     }
-                    else if(res.data === 'Minimum point value existed.'){
+                    else if (err.response.data === 'Minimum point value existed.') {
                         alert(`Benefit dengan minimal poin ${parseInt(this.state.minPoint)} sudah terdaftar sebelumnya.`)
                     }
-                    else if(res.data === 'Discount value existed.'){
+                    else if (err.response.data === 'Discount value existed.') {
                         alert(`Benefit dengan diskon benefit ${parseFloat(this.state.discountBenefit)}% sudah terdaftar sebelumnya.`)
                     }
-                    else{
-                        alert(`Benefit dengan nama ${this.state.benefitName} berhasil disimpan.`)
+                    else if (err.response.status === 401) {
+                        alert('Anda tidak memiliki akses untuk bagian ini.')
                         this.setState({
-                            redirect : true
+                            redirect: true
                         })
                     }
-                })
-                .catch((err) => {
-                    alert(JSON.stringify(err))
+                    else {
+                        alert(JSON.stringify(err.response))
+                    }
                 })
         }
     }
@@ -72,7 +96,11 @@ class PointBenefitAddNew extends React.Component {
         let inputStyle = { background: 'lightgrey', border: 'none', borderRadius: '5px' }
 
         if (this.state.redirect == true) {
-            return (<Navigate to='/point-benefit/point-benefit-list' />)
+            return (<Navigate to='/dashboard' />)
+        }
+
+        if (this.state.redirectDashboard == true) {
+            return (<Navigate to='/dashboard' />)
         }
 
         return (

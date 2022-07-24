@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import axios from 'axios'
 import ico_read from './../../assets/images/binoculars.png'
 import ico_edit from './../../assets/images/edit.png'
@@ -7,7 +7,7 @@ import ico_edit from './../../assets/images/edit.png'
 class CustomersMain extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { custs: []}
+        this.state = { custs: [], redirectDashboard: false}
         this.custsListTable = this.custsListTable.bind(this)
     }
 
@@ -18,6 +18,17 @@ class CustomersMain extends React.Component {
                 this.setState({
                     custs: res.data
                 })
+            })
+            .catch((err) => {
+                if (err.response.status === 401) {
+                    alert('Anda tidak memiliki akses untuk bagian ini.')
+                    this.setState({
+                        redirectDashboard: true
+                    })
+                }
+                else {
+                    alert(JSON.stringify(err.response))
+                }
             })
     }
 
@@ -64,6 +75,10 @@ class CustomersMain extends React.Component {
     }
 
     render() {
+        if (this.state.redirectDashboard == true) {
+            return (<Navigate to='/dashboard' />)
+        }
+        
         return (
             <div className='container-flex' style={{ margin: '8vh 0 0 5.3vw', width: '94.7vw', padding: '0 4vw', display: 'inline-block' }}>
                 <div className='row' style={{ height: '3vh' }}></div>

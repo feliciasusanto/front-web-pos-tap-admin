@@ -46,7 +46,9 @@ class Login extends React.Component {
                     })
                 })
                 .catch((err => {
-                    alert('Login Gagal. Harap periksa kembali username dan kata sandi.')
+                    if(err.response.status === 401){
+                        alert('Login Gagal. Harap periksa kembali username dan kata sandi.')
+                    }
                 }))
         }
         else{

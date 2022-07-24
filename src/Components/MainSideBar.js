@@ -19,6 +19,8 @@ class Sidebar extends React.Component {
         .then((res) => {})
         .catch((err) => {
             if(err.response.status === 403){
+                alert('Session invalid. Harap kembali melakukan login.')
+                sessionStorage.clear()
                 this.setState({
                     redirectLogin: true
                 })

@@ -32,17 +32,20 @@ class ChangePass extends React.Component {
             axios.post('https://backend-pos-tap.herokuapp.com/admin/change-password', { oldPassword: this.state.oldPassword, newPassword: this.state.newPassword, confirmNewPassword: this.state.confirmNewPassword }, { headers: { 'Authorization': `Bearer ${token}` } })
                 .then((res) => {
                     // alert(JSON.stringify(res))
-                    if (res.data === 'Existing password does not match.') {
+                    alert('Kata sandi baru berhasil disimpan.')
+                    this.setState({
+                        redirect: true
+                    })
+                })
+                .catch((err) => {
+                    if (err.response.data === 'Existing password does not match.') {
                         alert('Kata sandi lama anda salah. Harap diperiksa kembali.')
                     }
-                    else if (res.data === 'New password should must not be the same as old password.') {
+                    else if (err.response.data === 'New password should must not be the same as old password.') {
                         alert('Kata sandi baru tidak boleh sama dengan kata sandi lama.')
                     }
                     else {
-                        alert('Kata sandi baru berhasil disimpan.')
-                        this.setState({
-                            redirect: true
-                        })
+                        alert(JSON.stringify(err.response))
                     }
                 })
         }

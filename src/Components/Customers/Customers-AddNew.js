@@ -5,9 +5,30 @@ import axios from 'axios'
 class CustomersAddNew extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { custCode: ' ', password: '', confirmPassword: '', custName: ' ', taxId: ' ', billToAddress: ' ', shipToAddress: ' ', phone: ' ', email: ' ', ctcPersonName: ' ', ctcPersonPhone: ' ', ctcPersonEmail: ' ', remarks: ' ', redirect: false, redirectLogin: false }
+        this.state = { custCode: ' ', password: '', confirmPassword: '', custName: ' ', taxId: ' ', billToAddress: ' ', shipToAddress: ' ', phone: ' ', email: ' ', ctcPersonName: ' ', ctcPersonPhone: ' ', ctcPersonEmail: ' ', remarks: ' ', redirect: false, redirectDashboard: false }
         this.handleInputChange = this.handleInputChange.bind(this)
         this.handleClickSubmit = this.handleClickSubmit.bind(this)
+    }
+
+    componentDidMount() {
+        let token = sessionStorage.getItem('token')
+        axios.get('https://backend-pos-tap.herokuapp.com/admin/customers/list', { headers: { 'Authorization': `Bearer ${token}` } })
+            .then((res) => {
+                this.setState({
+                    custs: res.data
+                })
+            })
+            .catch((err) => {
+                if (err.response.status === 401) {
+                    alert('Anda tidak memiliki akses untuk bagian ini.')
+                    this.setState({
+                        redirectDashboard: true
+                    })
+                }
+                else {
+                    alert(JSON.stringify(err.response))
+                }
+            })
     }
 
     handleInputChange = (event) => {
@@ -85,6 +106,10 @@ class CustomersAddNew extends React.Component {
 
         if (this.state.redirect == true) {
             return (<Navigate to='/customers/customers-list' />)
+        }
+
+        if (this.state.redirectDashboard == true) {
+            return (<Navigate to='/dashboard' />)
         }
 
         return (

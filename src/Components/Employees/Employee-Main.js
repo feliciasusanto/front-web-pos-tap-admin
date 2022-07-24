@@ -1,12 +1,12 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import axios from 'axios'
 import ico_edit from './../../assets/images/edit.png'
 
 class EmployeesMain extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { roles: [], users: [] }
+        this.state = { roles: [], users: [], redirect: false, redirectDashboard: false }
         this.roleListTable = this.roleListTable.bind(this)
         this.usersListTable = this.usersListTable.bind(this)
     }
@@ -18,6 +18,17 @@ class EmployeesMain extends React.Component {
                 this.setState({
                     roles: res.data
                 })
+            })
+            .catch((err)=>{
+                if(err.response.status === 401){
+                    alert('Anda tidak memiliki akses untuk bagian ini.')
+                    this.setState({
+                        redirectDashboard: true
+                    })
+                }
+                else{
+                    alert(JSON.stringify(err.response))
+                }
             })
 
         axios.get('https://backend-pos-tap.herokuapp.com/admin/users/users_list', { headers: { 'Authorization': `Bearer ${token}` } })
@@ -78,7 +89,7 @@ class EmployeesMain extends React.Component {
             })
         }
         return (
-            <table className='row'>
+            <table style={{tableLayout: 'fixed'}}>
                 <thead>
                     <tr style={{ background: 'lightblue' }}>
                         <th className='col-1' style={{ border: '1px double black', fontWeight: 'normal', width: '3%', textAlign: 'center', padding: '0' }}>#</th>
@@ -99,6 +110,15 @@ class EmployeesMain extends React.Component {
     }
 
     render() {
+        
+        if (this.state.redirect == true) {
+            return (<Navigate to='/dashboard' />)
+        }
+
+        if (this.state.redirectDashboard == true) {
+            return (<Navigate to='/dashboard' />)
+        }
+
         return (
             <div className='container-flex' style={{ margin: '8vh 0 0 5.3vw', width: '94.7vw', padding: '0 4vw', display: 'inline-block' }}>
                 <div className='row' style={{ height: '3vh' }}></div>

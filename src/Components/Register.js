@@ -40,7 +40,7 @@ class Register extends React.Component {
         else {
             axios.post('https://backend-pos-tap.herokuapp.com/admin/register', { username: this.state.username, password: this.state.password })
                 .then((resp) => {
-                    if (resp.data === '' && resp.status == 200) {
+                    if (resp.data === 'OK' && resp.status == 200) {
                         alert('Pengguna/ karyawan baru dengan peran superuser berhasil didaftarkan.')
                         this.setState({
                             redirect: true

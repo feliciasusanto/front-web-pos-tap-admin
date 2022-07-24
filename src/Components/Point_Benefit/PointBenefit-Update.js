@@ -5,7 +5,7 @@ import axios from 'axios'
 class PointBenefitUpdate extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { benefit_id: parseInt(window.location.pathname.split('/')[3]), benefitName: '', minPoint: '', discountBenefit: '', activeStatus: 'Aktif', redirect: false }
+        this.state = { benefit_id: parseInt(window.location.pathname.split('/')[3]), benefitName: '', minPoint: '', discountBenefit: '', activeStatus: 'Aktif', redirect: false, redirectDashboard: false }
         this.handleInputChange = this.handleInputChange.bind(this)
         this.handleClickSubmit = this.handleClickSubmit.bind(this)
     }
@@ -14,7 +14,7 @@ class PointBenefitUpdate extends React.Component {
         let token = sessionStorage.getItem('token')
         // load previous data 
         axios.get(`https://backend-pos-tap.herokuapp.com/admin/point-benefits/update-benefit/${this.state.benefit_id}`, { headers: { 'Authorization': `Bearer ${token}` } })
-            .then(res => {
+            .then((res) => {
                 this.setState({
                     benefitName: res.data[0].name,
                     minPoint: (res.data[0].minimum_point).toString(),
@@ -22,8 +22,16 @@ class PointBenefitUpdate extends React.Component {
                     activeStatus: res.data[0].active_status
                 })
             })
-            .catch(err =>{
-                alert(JSON.stringify(err))
+            .catch((err) => {
+                if (err.response.status === 401) {
+                    alert('Anda tidak memiliki akses untuk bagian ini.')
+                    this.setState({
+                        redirectDashboard: true
+                    })
+                }
+                else {
+                    alert(JSON.stringify(err.response))
+                }
             })
     }
 
@@ -90,6 +98,10 @@ class PointBenefitUpdate extends React.Component {
 
         if (this.state.redirect == true) {
             return (<Navigate to='/point-benefit/point-benefit-list' />)
+        }
+
+        if (this.state.redirectDashboard == true) {
+            return (<Navigate to='/dashboard' />)
         }
 
         return (

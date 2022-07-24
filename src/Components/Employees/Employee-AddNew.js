@@ -5,7 +5,7 @@ import axios from 'axios'
 class EmployeesAddNew extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { roles: [], username: '', password: '', confirmPassword: '', role: 'Superuser', activeStatus: 'Aktif', redirect: false }
+        this.state = { roles: [], username: '', password: '', confirmPassword: '', role: 'Superuser', activeStatus: 'Aktif', redirect: false, redirectDashboard: false }
         this.roleListCombo = this.roleListCombo.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this)
         this.handleClickSubmit = this.handleClickSubmit.bind(this)
@@ -20,7 +20,15 @@ class EmployeesAddNew extends React.Component {
                 })
             })
             .catch((err) => {
-                alert(JSON.stringify(err))
+                if (err.response.status === 401) {
+                    alert('Anda tidak memiliki akses untuk bagian ini.')
+                    this.setState({
+                        redirectDashboard: true
+                    })
+                }
+                else {
+                    alert(JSON.stringify(err.response))
+                }
             })
     }
 
@@ -63,16 +71,16 @@ class EmployeesAddNew extends React.Component {
             let token = sessionStorage.getItem('token')
             axios.post('https://backend-pos-tap.herokuapp.com/admin/users/add-new', { username: this.state.username, password: this.state.password, confirmPassword: this.state.confirmPassword, role: this.state.role, activeStatus: this.state.activeStatus }, { headers: { 'Authorization': `Bearer ${token}` } })
                 .then((res) => {
-                    if (res.data === 'Username existed.') {
+                    alert(`Pengguna/ karyawan baru dengan peran ${this.state.role.toLowerCase()} berhasil didaftarkan.`)
+                    this.setState({ redirect: true })
+                })
+                .catch((err) => {
+                    if (err.response.data === 'Username existed.') {
                         alert('Username tidak boleh sama dengan yang sudah terdaftar sebelumnya.')
                     }
                     else {
-                        alert(`Pengguna/ karyawan baru dengan peran ${this.state.role.toLowerCase()} berhasil didaftarkan.`)
-                        this.setState({redirect: true})
+                        alert(JSON.stringify(err.response))
                     }
-                })
-                .catch((err) => {
-                    alert(JSON.stringify(err))
                 })
         }
     }
@@ -99,6 +107,10 @@ class EmployeesAddNew extends React.Component {
 
         if (this.state.redirect == true) {
             return (<Navigate to='/employees/roles-employees-list' />)
+        }
+
+        if (this.state.redirectDashboard == true) {
+            return (<Navigate to='/dashboard' />)
         }
 
         return (

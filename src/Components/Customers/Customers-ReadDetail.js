@@ -5,7 +5,7 @@ import axios from 'axios'
 class CustomersReadDetail extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { cust_id: parseInt(window.location.pathname.split('/')[3]), cust: {}, redirect: false }
+        this.state = { cust_id: parseInt(window.location.pathname.split('/')[3]), cust: {}, redirect: false, redirectDashboard: false }
     }
 
     componentDidMount() {
@@ -17,7 +17,15 @@ class CustomersReadDetail extends React.Component {
                 })
             })
             .catch((err) => {
-                alert(JSON.stringify(err))
+                if (err.response.status === 401) {
+                    alert('Anda tidak memiliki akses untuk bagian ini.')
+                    this.setState({
+                        redirectDashboard: true
+                    })
+                }
+                else {
+                    alert(JSON.stringify(err.response))
+                }
             })
     }
 
@@ -26,6 +34,10 @@ class CustomersReadDetail extends React.Component {
 
         if (this.state.redirect == true) {
             return (<Navigate to='/customers/customers-list' />)
+        }
+
+        if (this.state.redirectDashboard == true) {
+            return (<Navigate to='/dashboard' />)
         }
 
         return (

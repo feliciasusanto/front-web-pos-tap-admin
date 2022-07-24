@@ -5,7 +5,7 @@ import axios from 'axios'
 class EmployeesUpdate extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { user_id: parseInt(window.location.pathname.split('/')[3]), roles: [], username: '', password: '', confirmPassword: '', role: 'Superuser', activeStatus: 'Aktif', redirect: false }
+        this.state = { user_id: parseInt(window.location.pathname.split('/')[3]), roles: [], username: '', password: '', confirmPassword: '', role: 'Superuser', activeStatus: 'Aktif', redirect: false, redirectDashboard: false }
         this.roleListCombo = this.roleListCombo.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this)
         this.handleClickSubmit = this.handleClickSubmit.bind(this)
@@ -21,18 +21,19 @@ class EmployeesUpdate extends React.Component {
                 })
             })
             .catch((err) => {
-                alert(JSON.stringify(err))
+                if(err.response.status === 401){
+                    alert('Anda tidak memiliki akses untuk bagian ini.')
+                    this.setState({
+                        redirectDashboard: true
+                    })
+                }
+                else{
+                    alert(JSON.stringify(err.response))
+                }
             })
         // load previous user data 
         axios.get(`https://backend-pos-tap.herokuapp.com/admin/users/update-data/${this.state.user_id}`, { headers: { 'Authorization': `Bearer ${token}` } })
             .then(res => {
-                if (res.data == 'Log on user data can\'t be change.') {
-                    alert('Tidak dapat mengubah data dari pengguna anda sendiri.')
-                    this.setState({
-                        redirect: true
-                    })
-                }
-                else {
                     this.setState({
                         username: res.data[0].username,
                         password: res.data[0].password,
@@ -40,6 +41,17 @@ class EmployeesUpdate extends React.Component {
                         role: res.data[0].role_name,
                         activeStatus: res.data[0].active_status
                     })
+                }
+            )
+            .catch((err) =>{
+                if (err.response.status == 403) {
+                    alert('Tidak dapat mengubah data dari pengguna anda sendiri.')
+                    this.setState({
+                        redirect: true
+                    })
+                }
+                else{
+                    alert(JSON.stringify(err))
                 }
             })
 
@@ -93,7 +105,12 @@ class EmployeesUpdate extends React.Component {
                     }
                 })
                 .catch((err) => {
-                    alert(JSON.stringify(err))
+                    if (err.response.data === 'Username existed.') {
+                        alert('Username tidak boleh sama dengan yang sudah terdaftar sebelumnya.')
+                    }
+                    else {
+                        alert(JSON.stringify(err.response))
+                    }
                 })
         }
     }
@@ -120,6 +137,10 @@ class EmployeesUpdate extends React.Component {
 
         if (this.state.redirect == true) {
             return (<Navigate to='/employees/roles-employees-list' />)
+        }
+
+        if (this.state.redirectDashboard == true) {
+            return (<Navigate to='/dashboard' />)
         }
 
         return (
