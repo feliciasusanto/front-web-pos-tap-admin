@@ -15,14 +15,17 @@ class PointBenefitAddNew extends React.Component {
         axios.get('https://backend-pos-tap.herokuapp.com/admin/point-benefits/list', { headers: { 'Authorization': `Bearer ${token}` } })
             .then((res) => {})
             .catch((err) => {
-                if (err.response.status === 401) {
+                if (err.response.status === 403) {
                     alert('Anda tidak memiliki akses untuk bagian ini.')
                     this.setState({
                         redirectDashboard: true
                     })
                 }
+                else if(err.response.status === 401){
+
+                }
                 else {
-                    alert(JSON.stringify(err.response))
+                    JSON.stringify(err.response)
                 }
             })
     }
@@ -79,7 +82,7 @@ class PointBenefitAddNew extends React.Component {
                     else if (err.response.data === 'Discount value existed.') {
                         alert(`Benefit dengan diskon benefit ${parseFloat(this.state.discountBenefit)}% sudah terdaftar sebelumnya.`)
                     }
-                    else if (err.response.status === 401) {
+                    else if (err.response.status === 403) {
                         alert('Anda tidak memiliki akses untuk bagian ini.')
                         this.setState({
                             redirect: true

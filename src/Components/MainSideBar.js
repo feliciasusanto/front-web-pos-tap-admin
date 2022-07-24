@@ -18,7 +18,7 @@ class Sidebar extends React.Component {
         axios.get('https://backend-pos-tap.herokuapp.com/admin/token-validation', { headers: { 'Authorization': `Bearer ${token}` } })
             .then((res) => { })
             .catch((err) => {
-                if (err.response.status === 403) {
+                if (err.response.status === 401) {
                     alert('Session invalid. Harap kembali melakukan login.')
                     sessionStorage.clear()
                     this.setState({

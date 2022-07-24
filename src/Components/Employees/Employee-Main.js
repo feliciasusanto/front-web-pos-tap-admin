@@ -20,14 +20,17 @@ class EmployeesMain extends React.Component {
                 })
             })
             .catch((err)=>{
-                if(err.response.status === 401){
+                if (err.response.status === 403) {
                     alert('Anda tidak memiliki akses untuk bagian ini.')
                     this.setState({
                         redirectDashboard: true
                     })
                 }
-                else{
-                    alert(JSON.stringify(err.response))
+                else if(err.response.status === 401){
+
+                }
+                else {
+                    JSON.stringify(err.response)
                 }
             })
 

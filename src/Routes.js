@@ -15,7 +15,8 @@ import CustomersMain from './Routes/Customers/CustomersMainRoute.js'
 import CustomersNew from './Routes/Customers/CustomersAddNewRoute.js'
 import CustomersReadDetail from './Routes/Customers/CustomersReadDetailRoute.js'
 import CustomersUpdate from './Routes/Customers/CustomersUpdateRoute.js'
-import ProductsMain from "./Routes/Products_Stock/ProductsStockMainRoute.js";
+import ProductsMain from './Routes/Products_Stock/ProductsStockMainRoute.js'
+import ProductsAddNewProduct from './Routes/Products_Stock/ProductsAddNewProductRoute.js'
 
 const AppRoutes = () => {
     return(
@@ -36,6 +37,7 @@ const AppRoutes = () => {
             <Route exact path='/customers/customer-details/:id' element={<CustomersReadDetail />}></Route>
             <Route exact path='/customers/update-data/:id' element={<CustomersUpdate />}></Route>
             <Route exact path='/products/product-stock-list' element={<ProductsMain/>}></Route>
+            <Route exact path='/products/add-new-product' element={<ProductsAddNewProduct/>}></Route>
         </Routes>
     )
 }

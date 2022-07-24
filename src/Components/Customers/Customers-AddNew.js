@@ -5,7 +5,7 @@ import axios from 'axios'
 class CustomersAddNew extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { custCode: ' ', password: '', confirmPassword: '', custName: ' ', taxId: '', billToAddress: ' ', shipToAddress: ' ', phone: ' ', email: ' ', ctcPersonName: ' ', ctcPersonPhone: ' ', ctcPersonEmail: ' ', remarks: ' ', redirect: false, redirectDashboard: false }
+        this.state = { custCode: '', password: '', confirmPassword: '', custName: '', taxId: '', billToAddress: '', shipToAddress: '', phone: '', email: '', ctcPersonName: '', ctcPersonPhone: '', ctcPersonEmail: '', remarks: '', redirect: false, redirectDashboard: false }
         this.handleInputChange = this.handleInputChange.bind(this)
         this.handleClickSubmit = this.handleClickSubmit.bind(this)
     }
@@ -19,14 +19,17 @@ class CustomersAddNew extends React.Component {
                 })
             })
             .catch((err) => {
-                if (err.response.status === 401) {
+                if (err.response.status === 403) {
                     alert('Anda tidak memiliki akses untuk bagian ini.')
                     this.setState({
                         redirectDashboard: true
                     })
                 }
+                else if(err.response.status === 401){
+
+                }
                 else {
-                    alert(JSON.stringify(err.response))
+                    JSON.stringify(err.response)
                 }
             })
     }
@@ -42,7 +45,6 @@ class CustomersAddNew extends React.Component {
 
     handleClickSubmit = (event) => {
         event.preventDefault()
-
         if (this.state.taxId === '') {
             this.setState({
                 taxId: '00.000.000.0-000.000'
@@ -153,7 +155,7 @@ class CustomersAddNew extends React.Component {
                             <label>Telepon Contact Person</label>
                         </div>
                         <div className='col-3'>
-                            <input type='tel' name='ctcPersonPhone' value={this.state.ctcPersonPhone} tabIndex='9' onChange={this.handleInputChange} style={inputStyle} />
+                            <input type='text' name='ctcPersonPhone' value={this.state.ctcPersonPhone} tabIndex='9' onChange={this.handleInputChange} style={inputStyle} />
                         </div>
                         <div className='col'></div>
                     </div>
@@ -214,7 +216,7 @@ class CustomersAddNew extends React.Component {
                             <label>Telepon</label>
                         </div>
                         <div className='col-3'>
-                            <input type='tel' name='phone' value={this.state.phone} tabIndex='6' onChange={this.handleInputChange} style={inputStyle} />
+                            <input type='text' name='phone' value={this.state.phone} tabIndex='6' onChange={this.handleInputChange} style={inputStyle} />
                         </div>
                     </div>
                     <div className='row' style={{ margin: '0 0 2vh 0' }}>

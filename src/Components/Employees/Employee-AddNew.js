@@ -20,14 +20,17 @@ class EmployeesAddNew extends React.Component {
                 })
             })
             .catch((err) => {
-                if (err.response.status === 401) {
+                if (err.response.status === 403) {
                     alert('Anda tidak memiliki akses untuk bagian ini.')
                     this.setState({
                         redirectDashboard: true
                     })
                 }
+                else if(err.response.status === 401){
+
+                }
                 else {
-                    alert(JSON.stringify(err.response))
+                    JSON.stringify(err.response)
                 }
             })
     }
