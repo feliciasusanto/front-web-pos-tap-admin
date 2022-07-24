@@ -5,7 +5,7 @@ import axios from 'axios'
 class ProductAddStock extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { items: [], productCode: '', selectedItem: {}, newStockNum: 0, redirect: false, redirectDashboard: false }
+        this.state = { items: [], itemCode: '', selectedItem: {}, stockQty: '', redirect: false, redirectDashboard: false }
         this.itemsListCombo = this.itemsListCombo.bind(this)
         this.handleSelectChange = this.handleSelectChange.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this)
@@ -13,12 +13,12 @@ class ProductAddStock extends React.Component {
 
     componentDidMount() {
         let token = sessionStorage.getItem('token')
-        axios.get('https://backend-pos-tap.herokuapp.com/admin/products/add-stock', { headers: { 'Authorization': `Bearer ${token}` } })
+        axios.get('https://backend-pos-tap.herokuapp.com/admin/products/find-product-stock', { headers: { 'Authorization': `Bearer ${token}` } })
             .then(res => {
                 this.setState({
                     items: res.data,
                     selectedItem: res.data[0],
-                    productCode: res.data[0].code
+                    itemCode: res.data[0].code
                 })
             })
             .catch((err) => {
@@ -55,31 +55,23 @@ class ProductAddStock extends React.Component {
         })
         let item = this.state.items.find(item => item.code === value)
         this.setState({
-            selectedItem: item
+            selectedItem: item,
+            stockQty: ''
         })
     }
 
     handleClickSubmit = (event) => {
         event.preventDefault()
-        if(this.state.newStockNum=== '' || parseInt(this.state.newStockNum) === 0){
-            alert('Harap memasukkan jumlah stok yang akan ditambahkan.')
-        }
-        // check is decimal
-        else if(this.state.newStockNum.indexOf('.') != -1){
-            alert('Harap memasukkan angka bulat yang valid untuk jumlah stok yang akan ditambahkan.')
-        }
-        else{
-            let token = sessionStorage.getItem('token')
-            axios.post('https://backend-pos-tap.herokuapp.com/admin/products/add-stock', {productCode: this.state.productCode, newStockNum: parseInt(this.state.newStockNum)}, { headers: { 'Authorization': `Bearer ${token}` } })
-            .then( (res) => {
-                alert('Stok berhasil ditambahkan.')
-                // refresh page
-                window.location.reload(false)
+        let token = sessionStorage.getItem('token')
+        axios.post('https://backend-pos-tap.herokuapp.com/admin/products/find-product-stock', {itemCode: this.state.itemCode}, { headers: { 'Authorization': `Bearer ${token}` } })
+        .then((res) => {
+            this.setState({
+                stockQty: res.data.stock_qty
             })
-            .catch((err) =>{
-                alert(err.response)
-            })
-        }
+        })
+        .catch((err) => {
+            alert(JSON.stringify(err.response))
+        })
     }
 
     itemsListCombo = (items_arr) => {
@@ -91,7 +83,7 @@ class ProductAddStock extends React.Component {
             })
         }
         return (
-            <select name='productCode' onChange={this.handleSelectChange} style={{ width: '100%', background: 'lightgrey', border: 'none', borderRadius: '5px', padding: '0.3vh 0' }}>
+            <select name='itemCode' onChange={this.handleSelectChange} style={{ width: '100%', background: 'lightgrey', border: 'none', borderRadius: '5px', padding: '0.3vh 0' }}>
                 {iterateItem(items_arr)}
             </select>
         )
@@ -165,21 +157,13 @@ class ProductAddStock extends React.Component {
                             <label>Stok Tersedia</label>
                         </div>
                         <div className='col-3'>
-                            <input type='number' name='stockQty' value={this.state.selectedItem.stock_qty} onChange={this.handleInputChange} style={inputStyle} disabled={true} />
-                        </div>
-                    </div>
-                    <div className='row' style={{ margin: '0 0 2vh 0' }}>
-                        <div className='col-2'>
-                            <label>Jumlah Stok yang akan Ditambahkan</label>
-                        </div>
-                        <div className='col-3'>
-                            <input type='number' name='newStockNum' step={1} min={0} value={this.state.newStockNum} onChange={this.handleInputChange} style={inputStyle} />
+                            <input type='number' name='stockQty' value={this.state.stockQty} onChange={this.handleInputChange} style={inputStyle} disabled={true} />
                         </div>
                     </div>
 
                     <div className='row' style={{ margin: '5vh 0 2vh 0' }}>
                         <div className='col-2 text-center'>
-                            <input type='submit' value='Simpan' onClick={this.handleClickSubmit} style={{ padding: '0.5vh 1.5vw', background: '#FBF337', borderRadius: '5px', border: 'none' }} />
+                            <input type='submit' value='Cari' onClick={this.handleClickSubmit} style={{ padding: '0.5vh 1.5vw', background: '#FBF337', borderRadius: '5px', border: 'none' }} />
                         </div>
                         <div className='col-2 text-center'>
                             <Link to='/products/product-stock-list'>
