@@ -93,8 +93,19 @@ class SalesAddNew extends React.Component {
             [name]: value,
         })
         let cust = this.state.custs.find(cust => cust.cust_id === parseInt(value))
+
+        let dpp = 0
+        this.state.soldItems.forEach(soldItem => {
+            soldItem = JSON.parse(soldItem)
+            dpp += soldItem.soldQty * parseInt(parseFloat(soldItem.unitPrice) - ((parseFloat(cust.disc) / 100.0 * parseFloat(parseInt(soldItem.unitPrice)))))
+        })
+        let tax = Math.round((11 / 100) * dpp)
+        let total_sales = dpp + tax
         this.setState({
-            selectedCust: cust
+            selectedCust: cust,
+            dpp: dpp,
+            tax: tax,
+            salesTotal: total_sales
         })
     }
 
@@ -117,17 +128,15 @@ class SalesAddNew extends React.Component {
         let soldItemName = this.state.selectedItem.name
         let soldQty = this.state.soldQty
         let unitPrice = parseInt(this.state.unitPrice)
-        let discPrice = this.state.unitPriceDisc
-        let total = parseFloat(soldQty) * parseFloat(discPrice)
 
-        let soldItemObj = { id: soldItemId, code: soldItemCode, name: soldItemName, soldQty: soldQty, unitPrice: unitPrice, discPrice: discPrice, totalPrice: total }
+        let soldItemObj = { id: soldItemId, code: soldItemCode, name: soldItemName, soldQty: soldQty, unitPrice: unitPrice }
         let newSoldItems = [...this.state.soldItems]
         newSoldItems.push(JSON.stringify(soldItemObj))
 
         let dpp = 0
         newSoldItems.forEach(soldItem => {
             soldItem = JSON.parse(soldItem)
-            dpp += soldItem.totalPrice
+            dpp += soldItem.soldQty * parseInt(parseFloat(soldItem.unitPrice) - ((parseFloat(this.state.selectedCust.disc) / 100.0 * parseFloat(parseInt(soldItem.unitPrice)))))
         })
         let tax = Math.round((11 / 100) * dpp)
         let total_sales = dpp + tax
@@ -219,7 +228,7 @@ class SalesAddNew extends React.Component {
         let dpp = 0
         newSoldItems.forEach(soldItem => {
             soldItem = JSON.parse(soldItem)
-            dpp += soldItem.totalPrice
+            dpp += soldItem.soldQty * parseInt(parseFloat(soldItem.unitPrice) - ((parseFloat(this.state.selectedCust.disc) / 100.0 * parseFloat(parseInt(soldItem.unitPrice)))))
         })
         let tax = Math.round((11 / 100) * dpp)
         let total_sales = dpp + tax
@@ -279,8 +288,8 @@ class SalesAddNew extends React.Component {
                         <td style={{ border: '1px double black', width: '10%', textAlign: 'center', padding: '0' }}>{item.code}</td>
                         <td style={{ border: '1px double black', width: '12%', textAlign: 'center', padding: '0' }}>{item.name}</td>
                         <td style={{ border: '1px double black', width: '8%', textAlign: 'center', padding: '0' }}>{item.soldQty}</td>
-                        <td style={{ border: '1px double black', width: '14%', textAlign: 'center', padding: '0' }}>Rp {this.thousands(item.discPrice)}</td>
-                        <td style={{ border: '1px double black', width: '16%', textAlign: 'center', padding: '0' }}>Rp {this.thousands(item.totalPrice)}</td>
+                        <td style={{ border: '1px double black', width: '14%', textAlign: 'center', padding: '0' }}>Rp {this.thousands(parseInt(parseFloat(item.unitPrice) - ((parseFloat(this.state.selectedCust.disc) / 100.0 * parseFloat(parseInt(item.unitPrice))))))}</td>
+                        <td style={{ border: '1px double black', width: '16%', textAlign: 'center', padding: '0' }}>Rp {this.thousands(item.soldQty * parseInt(parseFloat(item.unitPrice) - ((parseFloat(this.state.selectedCust.disc) / 100.0 * parseFloat(parseInt(item.unitPrice))))))}</td>
                         <td style={{ border: '1px double black', width: '4%', textAlign: 'center', padding: '0' }}>
                             <img onClick={() => this.handleDeleteClick(i)} src={ico_delete} alt='ico_delete' style={{ width: '65%', cursor: 'pointer' }} />
                         </td>
