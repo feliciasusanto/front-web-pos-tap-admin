@@ -23,6 +23,7 @@ import ProductsAddStock from './Routes/Products_Stock/ProductsAddStockRoute.js'
 import ProductsSearchStock from './Routes/Products_Stock/ProductsSearchStockRoute.js'
 import ProductStockReport from './Routes/Products_Stock/ProductsStockReportRoute.js'
 import SalesMain from './Routes/Sales/SalesMainRoute.js'
+import SalesNew from "./Routes/Sales/SalesAddNewRoute.js";
 
 const AppRoutes = () => {
     return(
@@ -50,6 +51,7 @@ const AppRoutes = () => {
             <Route exact path='/products/search-product-stock' element={<ProductsSearchStock/>}></Route>
             <Route exact path='/products/stock-report' element={<ProductStockReport/>}></Route>
             <Route exact path='/sales/sales-list' element={<SalesMain/>}></Route>
+            <Route exact path='/sales/add-new-sales' element={<SalesNew/>}></Route>
         </Routes>
     )
 }
