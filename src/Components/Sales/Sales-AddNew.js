@@ -7,7 +7,7 @@ class SalesAddNew extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            salesNo: '', salesDate: '', custs: [], custId: 0, productCode: '', selectedCust: { disc: 0 },
+            salesNo: '', salesDate: '', custs: [], productCode: '', selectedCust: { disc: 0 },
             purchaseOrderNum: '', dpp: 0, tax: 0, salesTotal: 0, remarks: '', items: [], selectedItem: {},
             soldQty: 1, unitPrice: 0, unitPriceDisc: 0, soldItems: [], redirect: false, redirectDashboard: false
         }
@@ -52,7 +52,6 @@ class SalesAddNew extends React.Component {
             .then(res => {
                 this.setState({
                     custs: res.data,
-                    custId: res.data[0].cust_id,
                     selectedCust: res.data[0]
                 })
             })
@@ -117,7 +116,7 @@ class SalesAddNew extends React.Component {
         let soldItemCode = this.state.selectedItem.code
         let soldItemName = this.state.selectedItem.name
         let soldQty = this.state.soldQty
-        let unitPrice = this.state.unitPrice
+        let unitPrice = parseInt(this.state.unitPrice)
         let discPrice = this.state.unitPriceDisc
         let total = parseFloat(soldQty) * parseFloat(discPrice)
 
@@ -139,15 +138,22 @@ class SalesAddNew extends React.Component {
             salesTotal: total_sales
         })
     }
+    
     handleUnitPriceChange = (event) => {
         const target = event.target
         const name = target.name
         const value = target.value
-        let unitPriceDisc = parseInt(target.value) - parseInt((parseFloat(this.state.selectedCust.disc) / 100.0 * parseFloat(parseInt(target.value))))
-        this.setState({
-            [name]: value,
-            unitPriceDisc: unitPriceDisc
-        })
+
+        if (parseInt(value) < 0 || value.indexOf('.') != -1) {
+            alert('Harap memasukkan angka bulat yang valid kolom harga barang.')
+        }
+        else {
+            let unitPriceDisc = parseFloat(target.value) - ((parseFloat(this.state.selectedCust.disc) / 100.0 * parseFloat(parseInt(target.value))))
+            this.setState({
+                [name]: value,
+                unitPriceDisc: Math.round(unitPriceDisc)
+            })
+        }
     }
 
     handleQtyChange = (event) => {
@@ -159,11 +165,51 @@ class SalesAddNew extends React.Component {
             [name]: value,
         })
 
+        if (parseInt(value) === 0) {
+            alert('Kuantitas minimal 1.')
+        }
+        else if (value === '' || value.indexOf('.') != -1) {
+            alert('Harap memasukkan angka bulat yang valid dengan minimal 1 untuk kolom kuantitas.')
+        }
     }
 
     handleClickSubmit = (event) => {
         event.preventDefault()
-        
+
+        if (this.state.soldItems.length === 0) {
+            alert('Harap menambahkan barang yang dijual terlebih dahulu.')
+        }
+        else if (this.state.salesTotal === 0) {
+            alert('Total penjualan tidak boleh 0.')
+        }
+        else {
+            let datas = {
+                custId: this.state.selectedCust.cust_id, benefitName: this.state.selectedCust.benefit_name, benefitDisc: this.state.selectedCust.disc,
+                purchaseOrderNum: this.state.purchaseOrderNum, remarks: this.state.remarks, soldItems: this.state.soldItems
+            }
+            let token = sessionStorage.getItem('token')
+            axios.post('https://backend-pos-tap.herokuapp.com/admin/sales/add-new', datas, { headers: { 'Authorization': `Bearer ${token}` } })
+                .then(res => {
+                    this.setState({
+                        redirect: true
+                    })
+                })
+                .catch((err) => {
+                    if (err.response.status === 422) {
+                        if (err.response.data.substring(0, ('Insufficent for item').length) === 'Insufficent for item') {
+                            alert(`Stok barang tidak mencukupi untuk barang dengan nama ${err.response.data.substring(('Insufficent for item ').length)}`)
+                        }
+                    }
+                    else if (err.response.status === 401) {
+                        this.setState({
+                            redirectDashboard: true
+                        })
+                    }
+                    else {
+                        JSON.stringify(err.response)
+                    }
+                })
+        }
     }
 
     handleDeleteClick = (index) => {
@@ -267,7 +313,7 @@ class SalesAddNew extends React.Component {
         let inputStyle = { color: 'black', width: '100%', background: 'lightgrey', border: 'none', borderRadius: '5px' }
 
         if (this.state.redirect == true) {
-            return (<Navigate to='/products/product-stock-list' />)
+            return (<Navigate to='/sales/sales-list' />)
         }
 
         if (this.state.redirectDashboard == true) {
@@ -277,9 +323,6 @@ class SalesAddNew extends React.Component {
         return (
             <div className='container-flex' style={{ margin: '8vh 0 0 5.3vw', width: '94.7vw', padding: '0 4vw', display: 'inline-block' }}>
                 <div className='row' style={{ height: '3vh' }}></div>
-                <div className='row'>{JSON.stringify(this.state)}</div>
-                <div className='row'>{JSON.stringify(this.state.selectedItem)}</div>
-
                 <div className='row'>
                     <div className='col-12'>
                         <h4>Penjualan</h4>
