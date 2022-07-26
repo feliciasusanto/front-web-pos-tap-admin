@@ -58,14 +58,16 @@ class SalesMain extends React.Component {
                                 <img src={ico_read} alt='See' style={{ width: '4vh', height: '4vh' }} />
                             </Link>
                             <Link to={`/sales/update-payment-status/${item.invoice_no}`} style={{ display: 'inline-block' }}>
-                                <img src={ico_edit} alt='Edit' style={{ width: '4vh', height: '4vh' }} />
+                                <img src={ico_edit} alt='Edit' style={{ width: '4vh', height: '4vh'}} />
                             </Link>
-                            <Link to={`/sales/invoice/${item.invoice_no}`} style={{ display: 'inline-block', marginLeft: '1vw' }}>
-                                <img src={ico_invoice} alt='Invoice' style={{ width: '4vh', height: '4vh' }} />
-                            </Link>
-                            <Link to={`/sales/delivery-note/${item.invoice_no}`} style={{ display: 'inline-block', marginLeft: '1vw'  }}>
-                                <img src={ico_delivery} alt='Edit' style={{ width: '4vh', height: '4vh' }} />
-                            </Link>
+                            <form action={`https://backend-pos-tap.herokuapp.com/admin/sales/invoice/${item.invoice_no}`} method='post' style={{ display: 'inline-block', marginLeft: '1vw', verticalAlign:'bottom' }}>
+                                <input type='hidden' name='token' value={sessionStorage.getItem('token')} style={{display: 'none'}}/>
+                                <input type='image' value='Submit' src={ico_invoice} alt='Invoice' style={{width: '4vh', height: '4vh', verticalAlign:'bottom' }} />
+                            </form>
+                            <form action={`https://backend-pos-tap.herokuapp.com/admin/sales/delivery-note/${item.invoice_no}`} method='post' style={{ display: 'inline-block', marginLeft: '1vw', verticalAlign:'bottom' }}>
+                                <input type='hidden' name='token' value={sessionStorage.getItem('token')} style={{display: 'none'}}/>
+                                <input type='image' value='Submit' src={ico_delivery} alt='Invoice' style={{width: '4vh', height: '4vh', verticalAlign:'bottom'}} />
+                            </form>
                         </td>
                     </tr>
                 )
@@ -80,7 +82,7 @@ class SalesMain extends React.Component {
                         <th style={{ border: '1px double black', fontWeight: 'normal', width: '10%', textAlign: 'center', padding: '0' }}>Tanggal</th>
                         <th style={{ border: '1px double black', fontWeight: 'normal', width: '10%', textAlign: 'center', padding: '0' }}>Kode Pelanggan</th>
                         <th style={{ border: '1px double black', fontWeight: 'normal', width: '15%', textAlign: 'center', padding: '0' }}>Nama Pelanggan</th>
-                        <th style={{ border: '1px double black', fontWeight: 'normal', width: '8%', textAlign: 'center', padding: '0' }}>No. PO Pelanggan</th>
+                        <th style={{ border: '1px double black', fontWeight: 'normal', width: '8%', textAlign: 'center', padding: '0' }}>No. PO</th>
                         <th style={{ border: '1px double black', fontWeight: 'normal', width: '10%', textAlign: 'center', padding: '0' }}>Total Penjualan</th>
                         <th style={{ border: '1px double black', fontWeight: 'normal', width: '9%', textAlign: 'center', padding: '0' }}>Status Bayar</th>
                         <th style={{ border: '1px double black', fontWeight: 'normal', width: '9%', textAlign: 'center', padding: '0' }}>Dibuat Oleh</th>
