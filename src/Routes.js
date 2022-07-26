@@ -1,5 +1,5 @@
 import React from "react";
-import {Routes, Route, Navigate} from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 
 import Register from "./Routes/RegisterRoute.js";
 import Login from './Routes/LoginRoute.js'
@@ -23,35 +23,37 @@ import ProductsAddStock from './Routes/Products_Stock/ProductsAddStockRoute.js'
 import ProductsSearchStock from './Routes/Products_Stock/ProductsSearchStockRoute.js'
 import ProductStockReport from './Routes/Products_Stock/ProductsStockReportRoute.js'
 import SalesMain from './Routes/Sales/SalesMainRoute.js'
-import SalesNew from "./Routes/Sales/SalesAddNewRoute.js";
+import SalesNew from './Routes/Sales/SalesAddNewRoute.js'
+import SalesReadDetail from './Routes/Sales/SalesReadDetailRoute.js'
 
 const AppRoutes = () => {
-    return(
+    return (
         <Routes>
-            <Route path='/' element={<Navigate to='/login'/>}></Route>
-            <Route exact path="/register" element={<Register/>}></Route>
-            <Route exact path='/login' element={<Login/>}></Route>
+            <Route path='/' element={<Navigate to='/login' />}></Route>
+            <Route exact path="/register" element={<Register />}></Route>
+            <Route exact path='/login' element={<Login />}></Route>
             <Route exact path='/dashboard' element={<Dashboard />}></Route>
             <Route exact path='/change-password' element={<ChangePassword />}></Route>
             <Route exact path='/employees/roles-employees-list' element={<EmployeesMain />}></Route>
             <Route exact path='/employees/add-new-employee' element={<EmployeesNew />}></Route>
             <Route exact path='/employees/update-data/:id' element={<EmployeesUpdate />}></Route>
-            <Route exact path='/point-benefit/point-benefit-list' element={<PointBenefitMain/>}></Route>
-            <Route exact path='/point-benefit/add-new-benefit' element={<PointBenefitNew/>}></Route>
+            <Route exact path='/point-benefit/point-benefit-list' element={<PointBenefitMain />}></Route>
+            <Route exact path='/point-benefit/add-new-benefit' element={<PointBenefitNew />}></Route>
             <Route exact path='/point-benefit/update-data/:id' element={<PointBenefitUpdate />}></Route>
-            <Route exact path='/customers/customers-list' element={<CustomersMain/>}></Route>
-            <Route exact path='/customers/add-new-customer' element={<CustomersNew/>}></Route>
+            <Route exact path='/customers/customers-list' element={<CustomersMain />}></Route>
+            <Route exact path='/customers/add-new-customer' element={<CustomersNew />}></Route>
             <Route exact path='/customers/customer-details/:id' element={<CustomersReadDetail />}></Route>
             <Route exact path='/customers/update-data/:id' element={<CustomersUpdate />}></Route>
-            <Route exact path='/products/product-stock-list' element={<ProductsMain/>}></Route>
-            <Route exact path='/products/add-new-product' element={<ProductsAddNewProduct/>}></Route>
-            <Route exact path='/products/product-details/:id' element={<ProductsDetail/>}></Route>
-            <Route exact path='/products/update-data/:id' element={<ProductsUpdateData/>}></Route>
-            <Route exact path='/products/add-product-stock' element={<ProductsAddStock/>}></Route>
-            <Route exact path='/products/search-product-stock' element={<ProductsSearchStock/>}></Route>
-            <Route exact path='/products/stock-report' element={<ProductStockReport/>}></Route>
-            <Route exact path='/sales/sales-list' element={<SalesMain/>}></Route>
-            <Route exact path='/sales/add-new-sales' element={<SalesNew/>}></Route>
+            <Route exact path='/products/product-stock-list' element={<ProductsMain />}></Route>
+            <Route exact path='/products/add-new-product' element={<ProductsAddNewProduct />}></Route>
+            <Route exact path='/products/product-details/:id' element={<ProductsDetail />}></Route>
+            <Route exact path='/products/update-data/:id' element={<ProductsUpdateData />}></Route>
+            <Route exact path='/products/add-product-stock' element={<ProductsAddStock />}></Route>
+            <Route exact path='/products/search-product-stock' element={<ProductsSearchStock />}></Route>
+            <Route exact path='/products/stock-report' element={<ProductStockReport />}></Route>
+            <Route exact path='/sales/sales-list' element={<SalesMain />}></Route>
+            <Route exact path='/sales/add-new-sales' element={<SalesNew />}></Route>
+            <Route exact path='/sales/sales-details/:invoice_no' element={<SalesReadDetail />}></Route>
         </Routes>
     )
 }
