@@ -26,6 +26,7 @@ import SalesMain from './Routes/Sales/SalesMainRoute.js'
 import SalesNew from './Routes/Sales/SalesAddNewRoute.js'
 import SalesReadDetail from './Routes/Sales/SalesReadDetailRoute.js'
 import SalesUpdatePaymentStatus from './Routes/Sales/SalesUpdatePaymentRoute.js'
+import SalesReport from './Routes/Sales/SalesReportRoute.js'
 
 const AppRoutes = () => {
     return (
@@ -56,6 +57,7 @@ const AppRoutes = () => {
             <Route exact path='/sales/add-new-sales' element={<SalesNew />}></Route>
             <Route exact path='/sales/sales-details/:invoice_no' element={<SalesReadDetail />}></Route>
             <Route exact path='/sales/update-payment-status/:invoice_no' element={<SalesUpdatePaymentStatus />}></Route>
+            <Route exact path='/sales/sales-report' element={<SalesReport />}></Route>
         </Routes>
     )
 }
