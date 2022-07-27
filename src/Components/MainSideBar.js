@@ -44,9 +44,9 @@ class Sidebar extends React.Component {
                     </div>
 
                     <ul className="dropdown-menu">
-                        <li style={{ textAlign: 'center', background: 'white' }}><Link to='/employees/roles-employees-list' style={linkStyle}>Daftar Peran & Pengguna</Link></li>
+                        <li style={{ textAlign: 'center', background: 'white' }}><Link to='/employees/roles-employees-list' style={linkStyle}>Daftar Peran & Karyawan</Link></li>
                         <hr className="dropdown-divider"></hr>
-                        <li style={{ textAlign: 'center', background: 'white' }}><Link to='/employees/add-new-employee' style={linkStyle}>Tambah Pengguna</Link></li>
+                        <li style={{ textAlign: 'center', background: 'white' }}><Link to='/employees/add-new-employee' style={linkStyle}>Tambah Karyawan</Link></li>
                     </ul>
                 </div>
                 <div className="btn-group dropend">

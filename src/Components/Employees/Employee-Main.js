@@ -139,14 +139,14 @@ class EmployeesMain extends React.Component {
                 </div>
                 <div className='row'>
                     <div className='col-12'>
-                        <h4>Pengguna</h4>
+                        <h4>Karyawan</h4>
                         <hr style={{ background: 'black' }} />
                     </div>
                     <div className='col-2'>
                         <Link to='/employees/add-new-employee' style={{ color: 'black', textDecoration: 'none', padding: '0.8vh 1.5vw', background: '#FBF337', borderRadius: '5px', border: 'none' }}>Tambah</Link>
                     </div>
                     <div className='col-12'>
-                        <h5 style={{ marginTop: '3vh' }}>Daftar Pengguna</h5>
+                        <h5 style={{ marginTop: '3vh' }}>Daftar Karyawan</h5>
                     </div>
                 </div>
                 {this.usersListTable(this.state.users)}
