@@ -125,7 +125,7 @@ class SalesReport extends React.Component {
                             <div className='row' style={{ margin: '0 0 2vh 0' }}>
                                 <div className='col'></div>
                                 <div className='col-3 text-center'>
-                                    <input type='submit' value='Simpan' style={{ padding: '0.5vh 1.5vw', background: '#FBF337', borderRadius: '5px', border: 'none' }} />
+                                    <input type='submit' value='Export' style={{ padding: '0.5vh 1.5vw', background: '#FBF337', borderRadius: '5px', border: 'none' }} />
                                 </div>
                                 <div className='col-3 text-center'>
                                     <Link to='/sales/sales-list'>

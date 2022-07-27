@@ -99,7 +99,7 @@ class ProductsStockReport extends React.Component {
                 <div className='row'>
                     <form className='col-2' action='https://backend-pos-tap.herokuapp.com/admin/products/stock-report/export' method='post' >
                         <input type='hidden' name='token' value={sessionStorage.getItem('token')} style={{ display: 'none' }} />
-                        <input type='submit' value='Download' onClick={this.handleClickSubmit} style={{ padding: '0.5vh 1.5vw', background: '#FBF337', borderRadius: '5px', border: 'none' }} />
+                        <input type='submit' value='Export' onClick={this.handleClickSubmit} style={{ padding: '0.5vh 1.5vw', background: '#FBF337', borderRadius: '5px', border: 'none' }} />
                     </form>
                 </div>
                 <div className='row'>

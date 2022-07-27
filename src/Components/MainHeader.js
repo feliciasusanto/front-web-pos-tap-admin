@@ -67,7 +67,7 @@ class Header extends React.Component {
                         </div>
                     </button>
                     <ul className='dropdown-menu'>
-                        <li><Link to='/change-password' className='dropdown-item'>Ganti kata sandi</Link></li>
+                        <li><Link to='/change-password' className='dropdown-item'>Ubah kata sandi</Link></li>
                         <li><a className='dropdown-item' onClick={this.onLogoutClicked} >Keluar</a></li>
                     </ul>
                 </div>
