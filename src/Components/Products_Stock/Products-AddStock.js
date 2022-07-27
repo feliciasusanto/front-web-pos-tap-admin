@@ -115,7 +115,7 @@ class ProductAddStock extends React.Component {
                     <div className='col-12'>
                         <h4>Barang dan Stok</h4>
                         <hr style={{ background: 'black' }} />
-                        <h5>Tambah Stok Barang</h5>
+                        <h5>Cari Barang dan Stok</h5>
                     </div>
                 </div>
                 <div className='row' style={{ height: '3vh' }}></div>
