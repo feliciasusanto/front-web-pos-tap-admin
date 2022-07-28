@@ -21,7 +21,13 @@ class ChangePass extends React.Component {
 
     handleSubmit = async (event) => {
         event.preventDefault()
-        if (this.state.newPassword.length < 8) {
+        if(this.state.oldPassword === ''){
+            alert('Harap mengisi kolom kata sandi lama.')
+        }
+        else if(this.state.newPassword === ''){
+            alert('Harap mengisi kolom kata sandi baru.')
+        }
+        else if (this.state.newPassword.length < 8) {
             alert('Kata sandi baru harus terdiri dari 8 atau lebih karakter.')
         }
         else if (this.state.confirmNewPassword !== this.state.newPassword) {
