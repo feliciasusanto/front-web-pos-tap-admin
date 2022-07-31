@@ -29,7 +29,7 @@ class PointBenefitUpdate extends React.Component {
                         redirectDashboard: true
                     })
                 }
-                else if(err.response.status === 401){
+                else if (err.response.status === 401) {
 
                 }
                 else {
@@ -58,44 +58,50 @@ class PointBenefitUpdate extends React.Component {
 
     handleClickSubmit = (event) => {
         event.preventDefault()
-        if(this.state.benefitName.trim().length === 0){
+        if (this.state.benefitName.trim().length === 0) {
             alert('Harap mengisi nama benefit.')
         }
-        else if(this.state.benefitName.trim().length > 10){
+        else if (this.state.benefitName.trim().length > 10) {
             alert('Nama benefit tidak boleh melebihi 10 karakter.')
         }
-        else if(this.state.minPoint.trim().length === 0){
+        else if (this.state.minPoint.trim().length === 0) {
             alert('Harap mengisi minimum poin atau transaksi.')
         }
         // check is decimal
-        else if(this.state.minPoint.indexOf('.') != -1){
+        else if (this.state.minPoint.indexOf('.') != -1) {
             alert('Harap memasukkan angka bulat yang valid untuk minimal poin/ transaksi')
         }
-        else if(this.state.discountBenefit.trim().length === 0){
+        else if (this.state.discountBenefit.trim().length === 0) {
             alert('Harap mengisi diskon benefit (dalam satuan persen).')
         }
-        else{
+        else {
             let token = sessionStorage.getItem('token')
             axios.post(`https://backend-pos-tap.herokuapp.com/admin/point-benefits/update-benefit/${this.state.benefit_id}`, { benefitName: this.state.benefitName, minPoint: parseInt(this.state.minPoint), discountBenefit: parseFloat(this.state.discountBenefit), activeStatus: this.state.activeStatus }, { headers: { 'Authorization': `Bearer ${token}` } })
                 .then((res) => {
-                    if(res.data === 'Benefit name existed.'){
-                        alert(`Nama benefit ${this.state.benefitName} sudah terdaftar sebelumnya.`)
-                    }
-                    else if(res.data === 'Minimum point existed.'){
-                        alert(`Benefit dengan minimal poin ${parseInt(this.state.minPoint)} sudah terdaftar sebelumnya.`)
-                    }
-                    else if(res.data === 'Discount existed.'){
-                        alert(`Benefit dengan diskon benefit ${parseFloat(this.state.discountBenefit)}% sudah terdaftar sebelumnya.`)
-                    }
-                    else{
-                        alert(`Benefit dengan nama ${this.state.benefitName} berhasil diubah.`)
-                        this.setState({
-                            redirect : true
-                        })
-                    }
+                    alert(`Benefit dengan nama ${this.state.benefitName} berhasil diubah.`)
+                    this.setState({
+                        redirect: true
+                    })
                 })
                 .catch((err) => {
-                    alert(JSON.stringify(err))
+                    if (err.response.data === 'Benefit name existed.') {
+                        alert(`Nama benefit ${this.state.benefitName} sudah terdaftar sebelumnya.`)
+                    }
+                    else if (err.response.data === 'Minimum point existed.') {
+                        alert(`Benefit dengan minimal poin ${parseInt(this.state.minPoint)} sudah terdaftar sebelumnya.`)
+                    }
+                    else if (err.response.data === 'Discount existed.') {
+                        alert(`Benefit dengan diskon benefit ${parseFloat(this.state.discountBenefit)}% sudah terdaftar sebelumnya.`)
+                    }
+                    else if (err.response.status === 403) {
+                        alert('Anda tidak memiliki akses untuk bagian ini.')
+                        this.setState({
+                            redirect: true
+                        })
+                    }
+                    else {
+                        alert(JSON.stringify(err.response))
+                    }
                 })
         }
     }
