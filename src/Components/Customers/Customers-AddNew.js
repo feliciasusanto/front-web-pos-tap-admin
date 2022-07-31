@@ -60,7 +60,7 @@ class CustomersAddNew extends React.Component {
             alert('Nomor NPWP salah. Harap diperiksa kembali.')
         }
         else if (this.state.billToAddress.trim().length === 0) {
-            alert('Harap mengisi alamat penagihan sesuai NPWP.')
+            alert('Harap mengisi alamat penagihan sesuai NPWP/ KTP.')
         }
         else if (this.state.shipToAddress.trim().length === 0) {
             alert('Harap mengisi alamat pengiriman.')
