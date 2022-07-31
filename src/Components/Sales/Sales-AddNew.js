@@ -210,6 +210,7 @@ class SalesAddNew extends React.Component {
             let token = sessionStorage.getItem('token')
             axios.post('https://backend-pos-tap.herokuapp.com/admin/sales/add-new', datas, { headers: { 'Authorization': `Bearer ${token}` } })
                 .then(res => {
+                    alert('Data penjualan berhasil disimpan.')
                     this.setState({
                         redirect: true
                     })
