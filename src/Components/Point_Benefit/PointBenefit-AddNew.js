@@ -103,7 +103,7 @@ class PointBenefitAddNew extends React.Component {
         let inputStyle = { background: 'lightgrey', border: 'none', borderRadius: '5px' }
 
         if (this.state.redirect == true) {
-            return (<Navigate to='/dashboard' />)
+            return (<Navigate to='/point-benefit/point-benefit-list' />)
         }
 
         if (this.state.redirectDashboard == true) {
