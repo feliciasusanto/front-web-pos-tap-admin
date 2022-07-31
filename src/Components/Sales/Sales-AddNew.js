@@ -129,25 +129,33 @@ class SalesAddNew extends React.Component {
         let soldQty = this.state.soldQty
         let unitPrice = parseInt(this.state.unitPrice)
 
-        let soldItemObj = { id: soldItemId, code: soldItemCode, name: soldItemName, soldQty: soldQty, unitPrice: unitPrice }
-        let newSoldItems = [...this.state.soldItems]
-        newSoldItems.push(JSON.stringify(soldItemObj))
+        if (soldQty === '' || soldQty === 0) {
+            alert('Harap mengisi kolom kuantitas dengan angka bulat minimal 1.')
+        }
+        else if (this.state.unitPrice === '') {
+            alert('Harap mengisi kolom harga barang (exclude PPN) dengan minimal nilai 0.')
+        }
+        else {
+            let soldItemObj = { id: soldItemId, code: soldItemCode, name: soldItemName, soldQty: soldQty, unitPrice: unitPrice }
+            let newSoldItems = [...this.state.soldItems]
+            newSoldItems.push(JSON.stringify(soldItemObj))
 
-        let dpp = 0
-        newSoldItems.forEach(soldItem => {
-            soldItem = JSON.parse(soldItem)
-            dpp += soldItem.soldQty * parseInt(parseFloat(soldItem.unitPrice) - ((parseFloat(this.state.selectedCust.disc) / 100.0 * parseFloat(parseInt(soldItem.unitPrice)))))
-        })
-        let tax = Math.round((11 / 100) * dpp)
-        let total_sales = dpp + tax
-        this.setState({
-            soldItems: newSoldItems,
-            dpp: dpp,
-            tax: tax,
-            salesTotal: total_sales
-        })
+            let dpp = 0
+            newSoldItems.forEach(soldItem => {
+                soldItem = JSON.parse(soldItem)
+                dpp += soldItem.soldQty * parseInt(parseFloat(soldItem.unitPrice) - ((parseFloat(this.state.selectedCust.disc) / 100.0 * parseFloat(parseInt(soldItem.unitPrice)))))
+            })
+            let tax = Math.round((11 / 100) * dpp)
+            let total_sales = dpp + tax
+            this.setState({
+                soldItems: newSoldItems,
+                dpp: dpp,
+                tax: tax,
+                salesTotal: total_sales
+            })
+        }
     }
-    
+
     handleUnitPriceChange = (event) => {
         const target = event.target
         const name = target.name
@@ -176,6 +184,9 @@ class SalesAddNew extends React.Component {
 
         if (parseInt(value) === 0) {
             alert('Kuantitas minimal 1.')
+            this.setState({
+                [name]: 1,
+            })
         }
         else if (value === '' || value.indexOf('.') != -1) {
             alert('Harap memasukkan angka bulat yang valid dengan minimal 1 untuk kolom kuantitas.')
